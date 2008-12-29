@@ -9,7 +9,7 @@ p(meta). 29 Dec 2008 - Draperstown, Northern Ireland
 
 I wanted to display a list of my repositories on my homepage. Spent a while fluffing about with the "jQuery.getJSON":http://docs.jquery.com/Ajax/jQuery.getJSON call, but in the end found it preferable to use the callback parameter combined with "jQuery.getScript":http://docs.jquery.com/Ajax/jQuery.getScript.
 
-Heres the code: 
+Heres the code, which will populate a div with the id "repos": 
 
 <pre>
 <code>
@@ -22,7 +22,7 @@ Heres the code:
 				var li = $("<li>").text(" - " + repo.description);
 				a.prependTo(li);
 				li.appendTo(ul);
-	    	});
+			});
 			$(ul).appendTo("#repos");
  		}
 		$.getScript("http://github.com/api/v1/json/snaggled?callback=parseRepo");
