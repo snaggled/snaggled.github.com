@@ -1,3 +1,5 @@
+/* @override http://snaggled.github.com/css/screen.css */
+
 /*****************************************************************************/
 /*
 /* Common
@@ -190,3 +192,7 @@ ul.posts {
   #related h2 {
     margin-bottom: 1em;
   }
+
+pre {
+	font-size: 75%;
+}
