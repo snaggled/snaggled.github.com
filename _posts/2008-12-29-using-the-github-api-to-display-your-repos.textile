@@ -17,7 +17,7 @@ Heres the code,
 	<script>
    		function parseRepo(data){
 			var ul = $("<ul>").attr("class", "posts");
-	    	$.each(data.user.repositories, function(i, repo) {
+			$.each(data.user.repositories, function(i, repo) {
 				var a = $("<a>").attr("href", repo.url).text(repo.name);
 				var li = $("<li>").text(" - " + repo.description);
 				a.prependTo(li);
