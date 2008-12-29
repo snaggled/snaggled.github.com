@@ -194,5 +194,7 @@ ul.posts {
   }
 
 pre {
+	
 	font-size: 75%;
+	font-weight: bold;
 }
