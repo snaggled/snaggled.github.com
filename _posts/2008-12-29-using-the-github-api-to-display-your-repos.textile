@@ -1,0 +1,31 @@
+---
+layout: post
+title: Using the GitHub API to Display your Repositories
+---
+
+h1. {{ page.title }}
+
+p(meta). 29 Dec 2008 - Draperstown, Northern Ireland
+
+I wanted to display a list of my repositories on my homepage. Spent a while fluffing about with the "jQuery.getJSON":http://docs.jquery.com/Ajax/jQuery.getJSON call, but in the end found it preferable to use the callback parameter combined with "jQuery.getScript":http://docs.jquery.com/Ajax/jQuery.getScript.
+
+Heres the code, 
+
+<pre>
+<code>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script>
+   		function parseRepo(data){
+			var ul = $("<ul>").attr("class", "posts");
+	    	$.each(data.user.repositories, function(i, repo) {
+				var a = $("<a>").attr("href", repo.url).text(repo.name);
+				var li = $("<li>").text(" - " + repo.description);
+				a.prependTo(li);
+				li.appendTo(ul);
+	    	});
+			$(ul).appendTo("#repos");
+ 		}
+		$.getScript("http://github.com/api/v1/json/snaggled?callback=parseRepo");
+	</script>
+</pre>
+</code>
