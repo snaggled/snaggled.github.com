@@ -4,6 +4,12 @@ title: snaggled
 ---
  
 <div id="home">
+  <ul class="posts">
+    {% for post in site.posts limit:1 %}
+		{{ post.content }}
+    {% endfor %}
+ </ul>
+
   <h1>Blog Posts</h1>
   <ul class="posts">
     {% for post in site.posts %}
@@ -11,6 +17,24 @@ title: snaggled
     {% endfor %}
   </ul>
   
+  <h1>Public Github Projects</h1>
+  <ul class="posts">	
+  <script type="text/javascript">
+	$.getJSON("http://github.com/api/v1/json/snaggled",
+	        function(data){
+	          $.each(data.items, function(i,item){
+				console.log("item");
+	            if ( i == 4 ) return false;
+	          });
+	        });
+	</script>
+	
+    <li><a href=""</a> - tbd</li>
+	<li><a href=""</a> - tbd</li>
+    <li><a href=""</a> - tbd</li>
+	<li><a href=""</a> - tbd</li>
+  </ul>
+
   <h1>External Projects</h1>
   <ul class="posts">
     <li><a href="http://geosack.com">geosack.com</a> - Google Geo-coding caching</li>
