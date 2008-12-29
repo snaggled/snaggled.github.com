@@ -1,0 +1,12 @@
+---
+layout: post
+title: Switching to Git (and GitHub)
+---
+
+h1. {{ page.title }}
+
+p(meta). 18 Dec 2008 - Moy, Northern Ireland
+
+Decided to finally make the move from "svn":http://subversion.tigris.org/ to "git":http://git.or.cz/ for all my projects, and in the process am considering a move to "GitHub":http://github.com, so we'll see how this goes. Mikey Finn is sitting here playing COD World at War, so I'm doing this to a soundtrack of explosions and death.
+
+Will probably spend a couple hours playing with "Jekyll":http://github.com/mojombo/jekyll/tree/master and if things look good, will start the migration of "Geosack":http://geosack.com.
