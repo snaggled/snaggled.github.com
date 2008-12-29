@@ -11,15 +11,17 @@
    <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
    <script src="http://code.jquery.com/jquery-latest.js"></script>
 	  <script>
-	  $(document).ready(function(){
-		$.getJSON("http://github.com/api/v1/json/snaggled",
-		        function(data){
-		          $.each(data.repositories, function(i,repo){
-					$.repo.name.appendTo("#repos");
-		            if ( i == 4 ) return false;
-		          });
-		        });
-		});
+      	function parseRepo(data){
+			var ul = $("<ul>").attr("class", "posts");
+	      	$.each(data.user.repositories, function(i, repo) {
+				var a = $("<a>").attr("href", repo.url).text(repo.name);
+				var li = $("<li>").text(" - " + repo.description);
+				a.prependTo(li);
+				li.appendTo(ul);
+	          });
+			$(ul).appendTo("#repos");
+    	}
+	  	$.getScript("http://github.com/api/v1/json/snaggled?callback=parseRepo");
 	  </script>
 </head>
 <body>
