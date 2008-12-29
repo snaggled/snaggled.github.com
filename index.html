@@ -17,17 +17,10 @@ title: snaggled
     {% endfor %}
   </ul>
   
-  <h1>Public Github Projects</h1>
-  <ul class="posts">	
-  <script type="text/javascript">
-	$.getJSON("http://github.com/api/v1/json/snaggled",
-	        function(data){
-	          $.each(data.items, function(i,item){
-				console.log("item");
-	            if ( i == 4 ) return false;
-	          });
-	        });
-	</script>
+  <h1>Github Repositories</h1>
+  	<ul class="posts">
+	   <div id="repos">
+	   </div>
 	
     <li><a href=""</a> - tbd</li>
 	<li><a href=""</a> - tbd</li>
