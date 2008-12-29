@@ -15,7 +15,7 @@
 		$.getJSON("http://github.com/api/v1/json/snaggled",
 		        function(data){
 		          $.each(data.repositories, function(i,repo){
-		            $("<a/>").attr("href", repo.name).appendTo("#repos");
+					$.repo.name.appendTo("#repos");
 		            if ( i == 4 ) return false;
 		          });
 		        });
