@@ -11,21 +11,4 @@ I wanted to display a list of my repositories on my homepage. Spent a while fluf
 
 Heres the code, which will populate a div with the id "repos": 
 
-<pre>
-<code>
-	<script src="http://code.jquery.com/jquery-latest.js"></script>
-	<script>
-   		function parseRepo(data){
-			var ul = $("<ul>").attr("class", "posts");
-			$.each(data.user.repositories, function(i, repo) {
-				var a = $("<a>").attr("href", repo.url).text(repo.name);
-				var li = $("<li>").text(" - " + repo.description);
-				a.prependTo(li);
-				li.appendTo(ul);
-			});
-			$(ul).appendTo("#repos");
- 		}
-		$.getScript("http://github.com/api/v1/json/snaggled?callback=parseRepo");
-	</script>
-</pre>
-</code>
+<script src='http://pastie.org/349089.js'></script>
