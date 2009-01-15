@@ -19,9 +19,8 @@
 				var li = $("<li>").text(" - " + repo.description);
 				a.prependTo(li);
 				li.appendTo(ul);
-				console.info(ul);
 	          });
-			console.info(ul);
+			console.info("appending " + ul + " to repos");
 			$(ul).appendTo("#repos");
     	}
 	  	$.getScript("http://github.com/api/v1/json/snaggled?callback=parseRepo");
