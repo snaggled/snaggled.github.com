@@ -13,6 +13,7 @@
 	<script src= "http://ajax.googleapis.com/ajax/libs/jquery/1.2/jquery.min.js"></script>
 	  <script>
       	function parseRepo(data){
+			console.info("am i still working ?");
 			var ul = $("<ul>").attr("class", "posts");
 	      	$.each(data.user.repositories, function(i, repo) {
 				var a = $("<a>").attr("href", repo.url).text(repo.name);
