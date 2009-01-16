@@ -1,0 +1,18 @@
+---
+layout: post
+title: Did the pastie break my repo display ?
+---
+
+h1. {{ page.title }}
+
+p(meta). 16 Jan 2009 - Denver, CO
+
+For some weird reason the repo display wasn't showing in the "last post":http://snaggled.github.com/2008/12/29/using-the-github-api-to-display-your-repos.html. The only thing different about it was the pastie, e.g.
+
+<pre>
+<script src='http://pastie.org/349089.js'></script>
+</pre>
+
+If I make this the last line of text before its piped thru "jekyll":http://github.com/mojombo/jekyll, the repo-display Javascript fails. Wierdness.
+
+
