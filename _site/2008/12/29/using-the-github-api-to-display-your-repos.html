@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Using the GitHub API to Display your Repositories</title>
+   <meta name="author" content="Philip Mcmahon" />
+   <link href="http://snaggled.github.com" rel="alternate" title="Philip Mcmahon" type="application/atom+xml" />
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+   <!--<script src="http://code.jquery.com/jquery-latest.js"></script>-->
+	<script src= "http://ajax.googleapis.com/ajax/libs/jquery/1.2/jquery.min.js"></script>
+	  <script>
+      	function parseRepo(data){
+			var ul = $("<ul>").attr("class", "posts");
+	      	$.each(data.user.repositories, function(i, repo) {
+				var a = $("<a>").attr("href", repo.url).text(repo.name);
+				var li = $("<li>").text(" - " + repo.description);
+				a.prependTo(li);
+				li.appendTo(ul);
+	          });
+			console.info("appending " + ul + " to repos");
+			$(ul).appendTo("#repos");
+    	}
+	  	$.getScript("http://github.com/api/v1/json/snaggled?callback=parseRepo");
+	  </script>
+</head>
+<body>
+
+<div class="site">
+  <div class="title">
+    <a href="/">Philip Mcmahon</a>
+    <a class="extra" href="http://github.com/snaggled">GitHub Home</a>
+  </div>
+  
+  <div id="post">
+<h1>Using the GitHub <span class="caps">API</span> to Display your Repositories</h1>
+
+
+	<p class="meta">29 Dec 2008 &#8211; Draperstown, Northern Ireland</p>
+
+
+	<p>I wanted to display a list of my repositories on my homepage. Spent a while fluffing about with the <a href="http://docs.jquery.com/Ajax/jQuery.getJSON">jQuery.getJSON</a> call, but in the end found it preferable to use the callback parameter combined with <a href="http://docs.jquery.com/Ajax/jQuery.getScript">jQuery.getScript</a>.</p>
+
+
+	<p>Heres the code, which will populate a div with the id &#8216;repos&#8217;:</p>
+
+
+<script src='http://pastie.org/349089.js'></script>
+</div>
+  
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Philip Mcmahon<br />
+        philip@packetnode.com<br/>
+		credits: <a href="http://github.com/mojombo">mojombo</a><br/>
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/snaggled/">github.com/snaggled</a><br />
+        <a href="http://twitter.com/snaggled/">twitter.com/snaggled</a><br />
+        <a href="http://rubyforge.org/users/snaggled/">rubyforge.org/users/snaggled/</a><br />
+      </p>
+    </div>
+    <div class="rss">
+      <a href="http://feeds.feedburner.com/snaggled">
+        <img src="/images/rss.png" alt="Subscribe to RSS Feed" />
+      </a>
+    </div>
+  </div>
+</div>	
+
+<a href="http://github.com/snaggled"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1855850-4");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

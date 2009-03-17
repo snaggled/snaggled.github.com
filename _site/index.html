@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>snaggled</title>
+   <meta name="author" content="Philip Mcmahon" />
+   <link href="http://snaggled.github.com" rel="alternate" title="Philip Mcmahon" type="application/atom+xml" />
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+   <!--<script src="http://code.jquery.com/jquery-latest.js"></script>-->
+	<script src= "http://ajax.googleapis.com/ajax/libs/jquery/1.2/jquery.min.js"></script>
+	  <script>
+      	function parseRepo(data){
+			var ul = $("<ul>").attr("class", "posts");
+	      	$.each(data.user.repositories, function(i, repo) {
+				var a = $("<a>").attr("href", repo.url).text(repo.name);
+				var li = $("<li>").text(" - " + repo.description);
+				a.prependTo(li);
+				li.appendTo(ul);
+	          });
+			console.info("appending " + ul + " to repos");
+			$(ul).appendTo("#repos");
+    	}
+	  	$.getScript("http://github.com/api/v1/json/snaggled?callback=parseRepo");
+	  </script>
+</head>
+<body>
+
+<div class="site">
+  <div class="title">
+    <a href="/">Philip Mcmahon</a>
+    <a class="extra" href="http://github.com/snaggled">GitHub Home</a>
+  </div>
+  
+   
+<div id="home">
+  <ul class="posts">
+    
+		<h1>Too Many Open Files in Rails &#8211; Temp Files in Mongrel</h1>
+
+
+	<p class="meta">16 Mar 2009 &#8211; Denver, CO</p>
+
+
+	<p>I&#8217;ve had a whole bunch of pain the last couple of days with <a href="http://mongrel.rubyforge.org/">mongrel</a> dumping tmp files on me and filling up my ulimit quota causing Rails to fall over.</p>
+
+
+	<p>It started when I started posting a bunch of multi-part files to Rails and letting <a href="http://github.com/technoweenie/attachment_fu/tree/master">attachment_fu</a> do the dirty-work, but I quickly hit upon this:</p>
+
+
+<pre>
+Processing DocumentsController#create to xml (for 127.0.0.1 at 2009-03-16 22:05:03) [POST]
+Parameters: {"document"=&gt;{"uploaded_data"=&gt;#&lt;File:/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/CGI25400-6&gt;, "path"=&gt;...}}
+      SQL (0.1ms)   SET NAMES 'utf8'
+      SQL (0.1ms)   SET SQL_AUTO_IS_NULL=0
+
+MissingSourceFile (no such file to load -- /Users/philipmcmahon/git/eiger/app/models/document.rb):
+       /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:382:in `load_without_new_constant_marking'
+       /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:382:in `load_file'
+       /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:521:in `new_constants_in'
+       /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:381:in `load_file'
+       /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:256:in `require_or_load'
+       /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:427:in `load_missing_constant'
+       /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:77:in `const_missing'
+       /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:89:in `const_missing'
+       /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:439:in `load_missing_constant'
+       /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:93:in `const_missing'
+       /app/controllers/documents_controller.rb:66:in `create'
+</pre>
+
+	<p>A quick check meant:</p>
+
+
+<pre>
+philip-mcmahons-macbook-pro:eiger philipmcmahon$ ulimit -n
+256
+</pre>
+
+	<p>and</p>
+
+
+<pre>
+philip-mcmahons-macbook-pro:~ philipmcmahon$ lsof /dev/disk0s2 | grep mongrel |  wc -l
+245
+
+philip-mcmahons-macbook-pro:~ philipmcmahon$ lsof /dev/disk0s2 | grep mongrel
+ruby      25400 philipmcmahon    6u   REG   14,2    712224 13096890 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon    7u   REG   14,2    348977 13102715 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon    8u   REG   14,2    626096 13096931 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon    9u   REG   14,2   1350716 13097079 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon   10u   REG   14,2    203294 13096875 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon   11u   REG   14,2   2699790 13097300 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon   12u   REG   14,2    178210 13096959 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon   13u   REG   14,2    217603 13097577 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon   14u   REG   14,2   1348152 13097069 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon   15u   REG   14,2    203292 13096968 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+</pre>
+
+	<p>Holy shit!</p>
+
+
+	<p>I have no idea what those file-pointers are, but I do know that they are caused by the file part of multi-part form upload data. For a while I thought it was related to creating Tempfile classes, but after it while it became clear that it was mongrel doing whatever.</p>
+
+
+	<p>To cut a long story short, I switched to <a href="http://www.webrick.org/">webrick</a> and the problem went away.</p>
+    
+ </ul>
+
+  <h1>Blog Posts</h1>
+  <ul class="posts">
+    
+      <li><span>16 Mar 2009</span> &raquo; <a href="/2009/03/16/temp-files-in-mongrel.html">Too Many Open Files in Rails - Temp Files in Mongrel</a></li>
+    
+      <li><span>28 Jan 2009</span> &raquo; <a href="/2009/01/28/singletons_classes_or_eigenclasses.html">Singleton classes or Eigenclasses</a></li>
+    
+      <li><span>25 Jan 2009</span> &raquo; <a href="/2009/01/25/multiple-inheritance-in-ruby.html">Multiple Inheritance in Ruby</a></li>
+    
+      <li><span>16 Jan 2009</span> &raquo; <a href="/2009/01/16/did-the-pastie-break-my-repo-display.html">Did the pastie break my repo display ?</a></li>
+    
+      <li><span>29 Dec 2008</span> &raquo; <a href="/2008/12/29/We are up and running.html">We are up and running</a></li>
+    
+      <li><span>29 Dec 2008</span> &raquo; <a href="/2008/12/29/using-the-github-api-to-display-your-repos.html">Using the GitHub API to Display your Repositories</a></li>
+    
+      <li><span>28 Dec 2008</span> &raquo; <a href="/2008/12/28/switching-to-git.html">Switching to Git (and GitHub)</a></li>
+    
+  </ul>
+  
+  <h1>Github Repositories</h1>
+  <div id="repos"></div>
+	
+  <h1>External Projects</h1>
+  <ul class="posts">
+    <li><a href="http://geosack.com">geosack.com</a> - Google Geo-coding caching</li>
+    <li><a href="http://packetnode.com">packetnode.com</a> - Emancipate, Evangelize, Revolutionize</li>
+  </ul>
+</div>
+  
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Philip Mcmahon<br />
+        philip@packetnode.com<br/>
+		credits: <a href="http://github.com/mojombo">mojombo</a><br/>
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/snaggled/">github.com/snaggled</a><br />
+        <a href="http://twitter.com/snaggled/">twitter.com/snaggled</a><br />
+        <a href="http://rubyforge.org/users/snaggled/">rubyforge.org/users/snaggled/</a><br />
+      </p>
+    </div>
+    <div class="rss">
+      <a href="http://feeds.feedburner.com/snaggled">
+        <img src="/images/rss.png" alt="Subscribe to RSS Feed" />
+      </a>
+    </div>
+  </div>
+</div>	
+
+<a href="http://github.com/snaggled"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1855850-4");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>
