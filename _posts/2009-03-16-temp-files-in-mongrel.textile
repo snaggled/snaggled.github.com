@@ -12,49 +12,49 @@ I've had a whole bunch of pain the last couple of days with "mongrel":http://mon
 It started when I started posting a bunch of multi-part files to Rails and letting "attachment_fu":http://github.com/technoweenie/attachment_fu/tree/master do the dirty-work, but I quickly hit upon this:
 
 <pre>
-Processing DocumentsController#create to xml (for 127.0.0.1 at 2009-03-16 22:05:03) [POST]
-Parameters: {"document"=>{"uploaded_data"=>#<File:/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/CGI25400-6>, "path"=>...}}
-	  SQL (0.1ms)   SET NAMES 'utf8'
-	  SQL (0.1ms)   SET SQL_AUTO_IS_NULL=0
+Processing DocumentsController#create to xml ...
+...
 
-MissingSourceFile (no such file to load -- /Users/philipmcmahon/git/eiger/app/models/document.rb):
-	   /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:382:in `load_without_new_constant_marking'
-	   /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:382:in `load_file'
-	   /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:521:in `new_constants_in'
-	   /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:381:in `load_file'
-	   /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:256:in `require_or_load'
-	   /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:427:in `load_missing_constant'
-	   /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:77:in `const_missing'
-	   /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:89:in `const_missing'
-	   /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:439:in `load_missing_constant'
-	   /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:93:in `const_missing'
-	   /app/controllers/documents_controller.rb:66:in `create'
+MissingSourceFile (no such file to load -- .../git/eiger/app/models/document.rb):
+	.../lib/active_support/dependencies.rb:382:in `load_without_new_constant_marking'
+	.../lib/active_support/dependencies.rb:382:in `load_file'
+	.../lib/active_support/dependencies.rb:521:in `new_constants_in'
 </pre>
 
 A quick check meant:
 
 <pre>
-philip-mcmahons-macbook-pro:eiger philipmcmahon$ ulimit -n
+:eiger philipmcmahon$ ulimit -n
 256
 </pre>
 
-and
+		and
 
 <pre>
-philip-mcmahons-macbook-pro:~ philipmcmahon$ lsof /dev/disk0s2 | grep mongrel |  wc -l
+:~ philipmcmahon$ lsof /dev/disk0s2 | grep mongrel |  wc -l
 245
 
 philip-mcmahons-macbook-pro:~ philipmcmahon$ lsof /dev/disk0s2 | grep mongrel
-ruby      25400 philipmcmahon    6u   REG   14,2    712224 13096890 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-ruby      25400 philipmcmahon    7u   REG   14,2    348977 13102715 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-ruby      25400 philipmcmahon    8u   REG   14,2    626096 13096931 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-ruby      25400 philipmcmahon    9u   REG   14,2   1350716 13097079 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-ruby      25400 philipmcmahon   10u   REG   14,2    203294 13096875 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-ruby      25400 philipmcmahon   11u   REG   14,2   2699790 13097300 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-ruby      25400 philipmcmahon   12u   REG   14,2    178210 13096959 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-ruby      25400 philipmcmahon   13u   REG   14,2    217603 13097577 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-ruby      25400 philipmcmahon   14u   REG   14,2   1348152 13097069 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-ruby      25400 philipmcmahon   15u   REG   14,2    203292 13096968 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon    6u   REG   14,2    712224 13096890 
+/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon    7u   REG   14,2    348977 13102715 
+/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon    8u   REG   14,2    626096 13096931 
+/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon    9u   REG   14,2   1350716 13097079 
+/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon   10u   REG   14,2    203294 13096875 
+/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon   11u   REG   14,2   2699790 13097300 
+/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon   12u   REG   14,2    178210 13096959 
+/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon   13u   REG   14,2    217603 13097577 
+/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon   14u   REG   14,2   1348152 13097069 
+/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
+ruby      25400 philipmcmahon   15u   REG   14,2    203292 13096968 
+/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
 </pre>
 
 Holy shit!	
