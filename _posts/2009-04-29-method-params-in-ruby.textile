@@ -1,0 +1,62 @@
+---
+layout: post
+title: Method Params in Ruby
+---
+
+h1. {{ page.title }}
+
+p(meta). 29 Apr 2009 - Denver, CO
+
+Couple of things: firstly, I was a little fed-up trying to keep the format of code when I pasted it into this blog, and "Gist":http://gist.github.com/104176 and "Pastie":http://pastie.org/ felt like overkill (although I do like those services, especially "Pastie":http://pastie.org/). From my github RSS feed there seemed to be a lot of activity on "Jekyll":http://github.com/mojombo/jekyll/tree/master so I was browsing the README and chanced upon the fact that it supports "Pygment":http://pygments.org/ which was just what I needed. One quick python "easy_install":http://peak.telecommunity.com/DevCenter/EasyInstall and I was up and running. Sweet!
+
+So, I spent some time this evening looking at methods & params in Ruby (actually: "here":http://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Method_Calls). Heres the short and sweet:
+
+*Hashes*
+
+Passing a Hash to a method will result in those parameters being rolled up into a single Hash Variable. 
+
+{% highlight irb %}
+>> def accept(var)
+>> var.inspect
+>> end
+=> nil
+>> accept('a')
+=> "\"a\""
+>> accept('a' => 1)
+=> "{\"a\"=>1}"
+>> accept('a'=>1,'b'=>2)
+=> "{\"a\"=>1, \"b\"=>2}"
+{% endhighlight %}
+*Asterisk*
+
+An asterisk (the 'splat' operator) can be used on last parameter of a method to pass additional params. Additional params are collected into an array in the last parameter.
+
+{% highlight 'irb' %}
+>> def accept2(a, b, *c)
+>> c.inspect
+>> end
+=> nil
+>> accept2(1, 2, 3, 4, 5)
+=> "[3, 4, 5]"
+{% endhighlight %}
+And the reverse is true, an array parameter can be prefixed by asterisk to be expanded as its passed to the method.
+
+{% highlight irb %}
+>> a = [1, 2, 3]
+=> [1, 2, 3]
+>> accept2(*a)
+=> "[3]"
+{% endhighlight %}
+Ampersand*
+
+Much like asterisk, except you are telling the method that a code block will be passed in. A proc object will be created and assigned to the param name.
+
+{% highlight irb %}
+>> def accept3(&code)
+>> code.call
+>> end
+=> nil
+>> accept3 {puts "philly"}
+philly
+=> nil
+{% endhighlight %}
