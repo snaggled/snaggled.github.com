@@ -36,109 +36,94 @@
   
   <div id="post">
 <h1>Multiple Inheritance in Ruby</h1>
-
-
-	<p class="meta">16 Jan 2009 &#8211; Miami, FL</p>
-
-
-	<p>I&#8217;m in Miami for a couple of days on business and spent the plane journey reading up on Ruby <i>Mixins</i> and how it gets around the multiple inheritance problem.</p>
-
-
-	<p>Coming from a Java background, where there was no multiple inheritance (<i>technically</i> there isn&#8217;t any in Ruby either), the solution to this one was pretty interesting to me. Ruby uses the concept of a <i>Mixin</i> which is really just a module. A module can&#8217;t be instantiated and is just a set of functionality.</p>
-
-
+<p class="meta">16 Jan 2009 &#8211; Miami, FL</p>
+<p>I&#8217;m in Miami for a couple of days on business and spent the plane journey reading up on Ruby <i>Mixins</i> and how it gets around the multiple inheritance problem.</p>
+<p>Coming from a Java background, where there was no multiple inheritance (<i>technically</i> there isn&#8217;t any in Ruby either), the solution to this one was pretty interesting to me. Ruby uses the concept of a <i>Mixin</i> which is really just a module. A module can&#8217;t be instantiated and is just a set of functionality.</p>
 <pre>
-    ?&gt; module Mixin
-    &gt;&gt; def mixin_method
-    &gt;&gt; "Mixin method" 
-    &gt;&gt; end
-    &gt;&gt; end
-    =&gt; nil
-    &gt;&gt; 
-    ?&gt; class A
-    &gt;&gt; include Mixin
-    &gt;&gt; end
-    =&gt; A
-    &gt;&gt; 
-    ?&gt; a = A.new
-    &gt;&gt; a.mixin_method
-    =&gt; "Mixin method" 
-</pre> 
-
-	<p>Where it gets interesting (and the reason Java never supported multiple inheritance) is what to do if we have conflicting methods in our superclasses (<i>&#8220;Diamond Problem&#8221;</i> anyone ?). Technically, Ruby does not support multiple inheritance, but you can mixin multiple modules into other classes or modules. How does Ruby deal with the diamond problem ? Well it basically uses the last method to be included. You can see below, that the returned method is based on the last one to be introduced to the lookup chain.</p>
-
-
-<pre>
-    ?&gt; module MixinA
-    &gt;&gt; def hello
-    &gt;&gt; "hello from A" 
-    &gt;&gt; end
-    &gt;&gt; end
-    =&gt; nil
-    &gt;&gt; 
-    ?&gt; module MixinB
-    &gt;&gt; def hello
-    &gt;&gt; "hello from B" 
-    &gt;&gt; end
-    &gt;&gt; end
-    =&gt; nil
-    &gt;&gt; 
-    ?&gt; class C
-    &gt;&gt; include MixinA
-    &gt;&gt; include MixinB
-    &gt;&gt; end
-    =&gt; C
-    &gt;&gt; 
-    ?&gt; c = C.new
-    =&gt; #&lt;C:0x5e6550&gt;
-    &gt;&gt; c.hello
-    =&gt; "hello from B" 
-    &gt;&gt; 
-    ?&gt; class D
-    &gt;&gt; include MixinB
-    &gt;&gt; include MixinA
-    &gt;&gt; end
-    =&gt; D
-    &gt;&gt; 
-    ?&gt; d = D.new
-    =&gt; #&lt;D:0x5e0ca4&gt;
-    &gt;&gt; d.hello
-    =&gt; "hello from A" 
+	?&gt; module Mixin
+	&gt;&gt; def mixin_method
+	&gt;&gt; "Mixin method"
+	&gt;&gt; end
+	&gt;&gt; end
+	=&gt; nil
+	&gt;&gt; 
+	?&gt; class A
+	&gt;&gt; include Mixin
+	&gt;&gt; end
+	=&gt; A
+	&gt;&gt; 
+	?&gt; a = A.new
+	&gt;&gt; a.mixin_method
+	=&gt; "Mixin method"
 </pre>
-
-	<p>And thats it. You can also include a module in another module, just like normal inheritance. Module is actually a super-class of Class, but classes cannot be mixed-in to other classes, only Modules can.</p>
-
-
+<p>Where it gets interesting (and the reason Java never supported multiple inheritance) is what to do if we have conflicting methods in our superclasses (<i>&#8220;Diamond Problem&#8221;</i> anyone ?). Technically, Ruby does not support multiple inheritance, but you can mixin multiple modules into other classes or modules. How does Ruby deal with the diamond problem ? Well it basically uses the last method to be included. You can see below, that the returned method is based on the last one to be introduced to the lookup chain.</p>
 <pre>
-    &gt;&gt; module MixinA
-    &gt;&gt; def hello
-    &gt;&gt; "hello" 
-    &gt;&gt; end
-    &gt;&gt; end
-    =&gt; nil
-    &gt;&gt; 
-    ?&gt; module MixinB
-    &gt;&gt; include MixinA
-    &gt;&gt; def hello2
-    &gt;&gt; "hello2" 
-    &gt;&gt; end
-    &gt;&gt; end
-    =&gt; nil
-    &gt;&gt; 
-    ?&gt; class C
-    &gt;&gt; include MixinB
-    &gt;&gt; end
-    =&gt; C
-    &gt;&gt; 
-    ?&gt; c = C.new
-    =&gt; #&lt;C:0x5e7608&gt;
-    &gt;&gt; c.hello
-    =&gt; "hello" 
-    &gt;&gt; c.hello2
-    =&gt; "hello2" 
+	?&gt; module MixinA
+	&gt;&gt; def hello
+	&gt;&gt; "hello from A"
+	&gt;&gt; end
+	&gt;&gt; end
+	=&gt; nil
+	&gt;&gt; 
+	?&gt; module MixinB
+	&gt;&gt; def hello
+	&gt;&gt; "hello from B"
+	&gt;&gt; end
+	&gt;&gt; end
+	=&gt; nil
+	&gt;&gt; 
+	?&gt; class C
+	&gt;&gt; include MixinA
+	&gt;&gt; include MixinB
+	&gt;&gt; end
+	=&gt; C
+	&gt;&gt; 
+	?&gt; c = C.new
+	=&gt; #&lt;C:0x5e6550&gt;
+	&gt;&gt; c.hello
+	=&gt; "hello from B"
+	&gt;&gt; 
+	?&gt; class D
+	&gt;&gt; include MixinB
+	&gt;&gt; include MixinA
+	&gt;&gt; end
+	=&gt; D
+	&gt;&gt; 
+	?&gt; d = D.new
+	=&gt; #&lt;D:0x5e0ca4&gt;
+	&gt;&gt; d.hello
+	=&gt; "hello from A"
 </pre>
-
-	<p>For a more complete introduction, of course you can simply <i>`ri Module`</i>.</p>
+<p>And thats it. You can also include a module in another module, just like normal inheritance. Module is actually a super-class of Class, but classes cannot be mixed-in to other classes, only Modules can.</p>
+<pre>
+	&gt;&gt; module MixinA
+	&gt;&gt; def hello
+	&gt;&gt; "hello"
+	&gt;&gt; end
+	&gt;&gt; end
+	=&gt; nil
+	&gt;&gt; 
+	?&gt; module MixinB
+	&gt;&gt; include MixinA
+	&gt;&gt; def hello2
+	&gt;&gt; "hello2"
+	&gt;&gt; end
+	&gt;&gt; end
+	=&gt; nil
+	&gt;&gt; 
+	?&gt; class C
+	&gt;&gt; include MixinB
+	&gt;&gt; end
+	=&gt; C
+	&gt;&gt; 
+	?&gt; c = C.new
+	=&gt; #&lt;C:0x5e7608&gt;
+	&gt;&gt; c.hello
+	=&gt; "hello"
+	&gt;&gt; c.hello2
+	=&gt; "hello2"
+</pre>
+<p>For a more complete introduction, of course you can simply <i>`ri Module`</i>.</p>
 </div>
   
   <div class="footer">

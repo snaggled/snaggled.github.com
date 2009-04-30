@@ -47,7 +47,7 @@ And the reverse is true, an array parameter can be prefixed by asterisk to be ex
 >> accept2(*a)
 => "[3]"
 {% endhighlight %}
-Ampersand*
+*Ampersand*
 
 Much like asterisk, except you are telling the method that a code block will be passed in. A proc object will be created and assigned to the param name.
 

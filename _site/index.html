@@ -38,77 +38,52 @@
 <div id="home">
   <ul class="posts">
     
-		<h1>Too Many Open Files in Rails &#8211; Temp Files in Mongrel</h1>
-
-
-	<p class="meta">16 Mar 2009 &#8211; Denver, CO</p>
-
-
-	<p>I&#8217;ve had a whole bunch of pain the last couple of days with <a href="http://mongrel.rubyforge.org/">mongrel</a> dumping tmp files on me and filling up my ulimit quota causing Rails to fall over.</p>
-
-
-	<p>It started when I started posting a bunch of multi-part files to Rails and letting <a href="http://github.com/technoweenie/attachment_fu/tree/master">attachment_fu</a> do the dirty-work, but I quickly hit upon this:</p>
-
-
-<pre>
-Processing DocumentsController#create to xml ...
-...
-
-MissingSourceFile (no such file to load -- .../git/eiger/app/models/document.rb):
-    .../lib/active_support/dependencies.rb:382:in `load_without_new_constant_marking'
-    .../lib/active_support/dependencies.rb:382:in `load_file'
-    .../lib/active_support/dependencies.rb:521:in `new_constants_in'
-</pre>
-
-	<p>A quick check meant:</p>
-
-
-<pre>
-:eiger philipmcmahon$ ulimit -n
-256
-</pre>
-
-        and
-
-<pre>
-:~ philipmcmahon$ lsof /dev/disk0s2 | grep mongrel |  wc -l
-245
-
-philip-mcmahons-macbook-pro:~ philipmcmahon$ lsof /dev/disk0s2 | grep mongrel
-ruby      25400 philipmcmahon    6u   REG   14,2    712224 13096890 
-/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-ruby      25400 philipmcmahon    7u   REG   14,2    348977 13102715 
-/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-ruby      25400 philipmcmahon    8u   REG   14,2    626096 13096931 
-/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-ruby      25400 philipmcmahon    9u   REG   14,2   1350716 13097079 
-/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-ruby      25400 philipmcmahon   10u   REG   14,2    203294 13096875 
-/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-ruby      25400 philipmcmahon   11u   REG   14,2   2699790 13097300 
-/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-ruby      25400 philipmcmahon   12u   REG   14,2    178210 13096959 
-/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-ruby      25400 philipmcmahon   13u   REG   14,2    217603 13097577 
-/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-ruby      25400 philipmcmahon   14u   REG   14,2   1348152 13097069 
-/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-ruby      25400 philipmcmahon   15u   REG   14,2    203292 13096968 
-/private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
-</pre>
-
-	<p>Holy shit!</p>
-
-
-	<p>I have no idea what those file-pointers are, but I do know that they are caused by the file part of multi-part form upload data. For a while I thought it was related to creating Tempfile classes, but after it while it became clear that it was mongrel doing whatever.</p>
-
-
-	<p>To cut a long story short, I switched to <a href="http://www.webrick.org/">webrick</a> and the problem went away.</p>
+		<h1>Method Params in Ruby</h1>
+<p class="meta">29 Apr 2009 &#8211; Denver, CO</p>
+<p>Couple of things: firstly, I was a little fed-up trying to keep the format of code when I pasted it into this blog, and <a href="http://gist.github.com/104176">Gist</a> and <a href="http://pastie.org/">Pastie</a> felt like overkill (although I do like those services, especially <a href="http://pastie.org/">Pastie</a>). From my github <span class="caps">RSS</span> feed there seemed to be a lot of activity on <a href="http://github.com/mojombo/jekyll/tree/master">Jekyll</a> so I was browsing the <span class="caps">README</span> and chanced upon the fact that it supports <a href="http://pygments.org/">Pygment</a> which was just what I needed. One quick python <a href="http://peak.telecommunity.com/DevCenter/EasyInstall">easy_install</a> and I was up and running. Sweet!</p>
+<p>So, I spent some time this evening looking at methods &amp; params in Ruby (actually: <a href="http://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Method_Calls">here</a>). Heres the short and sweet:</p>
+<p><strong>Hashes</strong></p>
+<p>Passing a Hash to a method will result in those parameters being rolled up into a single Hash Variable.</p>
+<p><div class="highlight"><pre><span class="gp">&gt;&gt; </span><span class="k">def</span> <span class="nf">accept</span><span class="p">(</span><span class="n">var</span><span class="p">)</span><br />
+<span class="gp">&gt;&gt; </span><span class="n">var</span><span class="o">.</span><span class="n">inspect</span><br />
+<span class="gp">&gt;&gt; </span><span class="k">end</span><br />
+<span class="go">=&gt; nil</span><br />
+<span class="gp">&gt;&gt; </span><span class="n">accept</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><br />
+<span class="go">=&gt; &quot;\&quot;a\&quot;&quot;</span><br />
+<span class="gp">&gt;&gt; </span><span class="n">accept</span><span class="p">(</span><span class="s1">&#39;a&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">)</span><br />
+<span class="go">=&gt; &quot;{\&quot;a\&quot;=&gt;1}&quot;</span><br />
+<span class="gp">&gt;&gt; </span><span class="n">accept</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="o">=&gt;</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="o">=&gt;</span><span class="mi">2</span><span class="p">)</span><br />
+<span class="go">=&gt; &quot;{\&quot;a\&quot;=&gt;1, \&quot;b\&quot;=&gt;2}&quot;</span><br />
+</pre></div><strong>Asterisk</strong></p>
+<p>An asterisk (the &#8216;splat&#8217; operator) can be used on last parameter of a method to pass additional params. Additional params are collected into an array in the last parameter.</p>
+<p><div class="highlight"><pre><span class="gp">&gt;&gt; </span><span class="k">def</span> <span class="nf">accept2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">*</span><span class="n">c</span><span class="p">)</span><br />
+<span class="gp">&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">inspect</span><br />
+<span class="gp">&gt;&gt; </span><span class="k">end</span><br />
+<span class="go">=&gt; nil</span><br />
+<span class="gp">&gt;&gt; </span><span class="n">accept2</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><br />
+<span class="go">=&gt; &quot;[3, 4, 5]&quot;</span><br />
+</pre></div>And the reverse is true, an array parameter can be prefixed by asterisk to be expanded as its passed to the method.</p>
+<p><div class="highlight"><pre><span class="gp">&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">]</span><br />
+<span class="go">=&gt; [1, 2, 3]</span><br />
+<span class="gp">&gt;&gt; </span><span class="n">accept2</span><span class="p">(</span><span class="o"><strong></span><span class="n">a</span><span class="p">)</span><br />
+<span class="go">=&gt; &quot;<sup class="footnote"><a href="#fn3">3</a></sup>&quot;</span><br />
+</pre></div>Ampersand</strong></p>
+<p>Much like asterisk, except you are telling the method that a code block will be passed in. A proc object will be created and assigned to the param name.</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt; </span><span class="k">def</span> <span class="nf">accept3</span><span class="p">(</span><span class="o">&amp;</span><span class="n">code</span><span class="p">)</span>
+<span class="gp">&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">call</span>
+<span class="gp">&gt;&gt; </span><span class="k">end</span>
+<span class="go">=&gt; nil</span>
+<span class="gp">&gt;&gt; </span><span class="n">accept3</span> <span class="p">{</span><span class="nb">puts</span> <span class="s2">&quot;philly&quot;</span><span class="p">}</span>
+<span class="go">philly</span>
+<span class="go">=&gt; nil</span>
+</pre></div>
     
  </ul>
 
   <h1>Blog Posts</h1>
   <ul class="posts">
+    
+      <li><span>29 Apr 2009</span> &raquo; <a href="/2009/04/29/method-params-in-ruby.html">Method Params in Ruby</a></li>
     
       <li><span>16 Mar 2009</span> &raquo; <a href="/2009/03/16/temp-files-in-mongrel.html">Too Many Open Files in Rails - Temp Files in Mongrel</a></li>
     

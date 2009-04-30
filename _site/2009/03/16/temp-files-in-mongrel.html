@@ -36,37 +36,24 @@
   
   <div id="post">
 <h1>Too Many Open Files in Rails &#8211; Temp Files in Mongrel</h1>
-
-
-	<p class="meta">16 Mar 2009 &#8211; Denver, CO</p>
-
-
-	<p>I&#8217;ve had a whole bunch of pain the last couple of days with <a href="http://mongrel.rubyforge.org/">mongrel</a> dumping tmp files on me and filling up my ulimit quota causing Rails to fall over.</p>
-
-
-	<p>It started when I started posting a bunch of multi-part files to Rails and letting <a href="http://github.com/technoweenie/attachment_fu/tree/master">attachment_fu</a> do the dirty-work, but I quickly hit upon this:</p>
-
-
+<p class="meta">16 Mar 2009 &#8211; Denver, CO</p>
+<p>I&#8217;ve had a whole bunch of pain the last couple of days with <a href="http://mongrel.rubyforge.org/">mongrel</a> dumping tmp files on me and filling up my ulimit quota causing Rails to fall over.</p>
+<p>It started when I started posting a bunch of multi-part files to Rails and letting <a href="http://github.com/technoweenie/attachment_fu/tree/master">attachment_fu</a> do the dirty-work, but I quickly hit upon this:</p>
 <pre>
 Processing DocumentsController#create to xml ...
 ...
 
 MissingSourceFile (no such file to load -- .../git/eiger/app/models/document.rb):
-    .../lib/active_support/dependencies.rb:382:in `load_without_new_constant_marking'
-    .../lib/active_support/dependencies.rb:382:in `load_file'
-    .../lib/active_support/dependencies.rb:521:in `new_constants_in'
+	.../lib/active_support/dependencies.rb:382:in `load_without_new_constant_marking'
+	.../lib/active_support/dependencies.rb:382:in `load_file'
+	.../lib/active_support/dependencies.rb:521:in `new_constants_in'
 </pre>
-
-	<p>A quick check meant:</p>
-
-
+<p>A quick check meant:</p>
 <pre>
 :eiger philipmcmahon$ ulimit -n
 256
 </pre>
-
-        and
-
+<p>and</p>
 <pre>
 :~ philipmcmahon$ lsof /dev/disk0s2 | grep mongrel |  wc -l
 245
@@ -93,14 +80,9 @@ ruby      25400 philipmcmahon   14u   REG   14,2   1348152 13097069
 ruby      25400 philipmcmahon   15u   REG   14,2    203292 13096968 
 /private/var/folders/+Z/+ZLlmYL1FlmQ5osVVIedbU+++TI/-Tmp-/mongrel25400-0
 </pre>
-
-	<p>Holy shit!</p>
-
-
-	<p>I have no idea what those file-pointers are, but I do know that they are caused by the file part of multi-part form upload data. For a while I thought it was related to creating Tempfile classes, but after it while it became clear that it was mongrel doing whatever.</p>
-
-
-	<p>To cut a long story short, I switched to <a href="http://www.webrick.org/">webrick</a> and the problem went away.</p>
+<p>Holy shit!</p>
+<p>I have no idea what those file-pointers are, but I do know that they are caused by the file part of multi-part form upload data. For a while I thought it was related to creating Tempfile classes, but after it while it became clear that it was mongrel doing whatever.</p>
+<p>To cut a long story short, I switched to <a href="http://www.webrick.org/">webrick</a> and the problem went away.</p>
 </div>
   
   <div class="footer">

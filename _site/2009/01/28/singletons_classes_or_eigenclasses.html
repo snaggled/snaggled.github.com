@@ -36,41 +36,30 @@
   
   <div id="post">
 <h1>Singleton classes or Eigenclasses</h1>
-
-
-	<p class="meta">28 Jan 2009 &#8211; Miami, FL</p>
-
-
-	<p>Vegas for the week at a conference. In the Java world, &#8216;Singleton&#8217; (at least to me) usually referred to the design pattern which allowed you to ensure that there would always only be a maximum of one object instance of a particular class. It was usually implemented by making the constructor private and providing an access method that returned a single (usually static) instance of an singular object. It might looked something like this:</p>
-
-
-<script src='http://pastie.org/373956.js'></script>
-
-	<p>Things appear to be slightly different in the Ruby world. A <i>singleton</i> or <i>eigenclass</i> in the Ruby world refers to a particular instance of an object, and ruby allows us to override the methods and behaviors of a particular object (note &#8211; not class).</p>
-
-
+<p class="meta">28 Jan 2009 &#8211; Miami, FL</p>
+<p>Vegas for the week at a conference. In the Java world, &#8216;Singleton&#8217; (at least to me) usually referred to the design pattern which allowed you to ensure that there would always only be a maximum of one object instance of a particular class. It was usually implemented by making the constructor private and providing an access method that returned a single (usually static) instance of an singular object. It might looked something like this:</p>
+<script src='http://pastie.org/373956.js'></script><p>Things appear to be slightly different in the Ruby world. A <i>singleton</i> or <i>eigenclass</i> in the Ruby world refers to a particular instance of an object, and ruby allows us to override the methods and behaviors of a particular object (note &#8211; not class).</p>
 <pre>
-    ?&gt; class A
-    &gt;&gt; end
-    =&gt; nil
-    &gt;&gt; 
-    ?&gt; a = A.new
-    =&gt; #&lt;A:0x5ef664&gt;
-    &gt;&gt; b = A.new
-    =&gt; #&lt;A:0x5ee1d8&gt;
-    &gt;&gt; 
-    ?&gt; class &lt;&lt; a
-    &gt;&gt; def to_s; "Instance method"; end
-    &gt;&gt; end
-    =&gt; nil
-    &gt;&gt; 
-    ?&gt; a
-    =&gt; Instance method
-    &gt;&gt; b
-    =&gt; #&lt;A:0x5ee1d8&gt;
+	?&gt; class A
+	&gt;&gt; end
+	=&gt; nil
+	&gt;&gt; 
+	?&gt; a = A.new
+	=&gt; #&lt;A:0x5ef664&gt;
+	&gt;&gt; b = A.new
+	=&gt; #&lt;A:0x5ee1d8&gt;
+	&gt;&gt; 
+	?&gt; class &lt;&lt; a
+	&gt;&gt; def to_s; "Instance method"; end
+	&gt;&gt; end
+	=&gt; nil
+	&gt;&gt; 
+	?&gt; a
+	=&gt; Instance method
+	&gt;&gt; b
+	=&gt; #&lt;A:0x5ee1d8&gt;
 </pre>
-
-	<p>For more checkout: <a href="http://whytheluckystiff.net/articles/seeingMetaclassesClearly.html">whytheluckystiff</a>.</p>
+<p>For more checkout: <a href="http://whytheluckystiff.net/articles/seeingMetaclassesClearly.html">whytheluckystiff</a>.</p>
 </div>
   
   <div class="footer">
