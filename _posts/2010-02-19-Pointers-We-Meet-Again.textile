@@ -44,10 +44,10 @@ Variable, meet pointer, who is nothing more than a memory address with your addr
 
 Gives us:
 
-<pre class='brush:cpp,gutter:false'>
-2010-02-19 07:07:26.919 Pointers[1958:903] count = 1, ptr = 1
-2010-02-19 07:07:26.922 Pointers[1958:903] count = 2, ptr = 2
-2010-02-19 07:07:26.923 Pointers[1958:903] ptr == 1606414028
+<pre class='brush:bash,gutter:false'>
+07:07:26.919 Pointers[1958:903] count = 1, ptr = 1
+07:07:26.922 Pointers[1958:903] count = 2, ptr = 2
+07:07:26.923 Pointers[1958:903] ptr == 1606414028
 </pre>
 
 h4. Structs
@@ -91,9 +91,161 @@ Pointer, meet struct. You two shall become very familiar. In fact, theres even s
 
 The product of your union (fnar, fnar):
 
+<pre class='brush:bash,gutter:false'>
+07:16:58.706 Pointers[2360:903] t = 1606413984
+07:16:58.709 Pointers[2360:903] t = 2
+07:16:58.709 Pointers[2360:903] t = 2010
+</pre>
+
+h4. Methods and Functions
+
+We have two options here - passing the address of a variable (&) is the same as declaring and passing a pointer.
+
 <pre class='brush:cpp,gutter:false'>
-2010-02-19 07:16:58.706 Pointers[2360:903] t = 1606413984
-2010-02-19 07:16:58.709 Pointers[2360:903] t = 2
-2010-02-19 07:16:58.709 Pointers[2360:903] t = 2010
-</pre></div>
+	#import <Foundation/Foundation.h>
+
+	// we're accepting pointers here
+	void exchange(int *p1, int *p2)
+	{
+		int temp;
+
+		temp = *p1;
+		*p1 = *p2;
+		*p2 = temp;
+	}
+
+	int main (int argc, const char * argv[]) {
+	    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+
+		int x = 1, y = 2;
+
+		// before exchange
+		NSLog(@"x, y == %i, %i", x, y);
+
+		// we can pass in the address of x, y
+		exchange(&x, &y);
+		NSLog(@"x, y == %i, %i", x, y);
+
+		// or we can declare a pointer and pass that in instead
+		int *p1, *p2;
+		p1 = &x;
+		p2 = &y;
+
+		exchange(p1, p2);
+		NSLog(@"x, y == %i, %i", *p1, *p2);
+
+	    [pool drain];
+	    return 0;
+	}	
+</pre>
+
+Mon cheri:
+
+<pre class='brush:bash,gutter:false'>
+07:44:36.137 Pointers[2892:903] x, y == 1, 2
+07:44:36.141 Pointers[2892:903] x, y == 2, 1
+07:44:36.141 Pointers[2892:903] x, y == 1, 2
+</pre>
+
+h4. Arrays
+
+And this, at last, is where the fun begins.
+
+<pre class='brush:cpp,gutter:false'>
+	#import <Foundation/Foundation.h>
+
+	int main (int argc, const char * argv[]) {
+	    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+
+		int *ptr;
+		int myArray[] = {1, 2, 3};
+
+		// we can point at the start of the array like this
+		ptr = &myArray[0];
+		NSLog(@"ptr == %i", *ptr);
+
+		// or use the shorter version, the compiler treats the 
+		// occurence of an array name with subscript as pointer
+		// to first element of the array
+		ptr = myArray;
+		NSLog(@"ptr == %i", *ptr);
+
+		// then we can access directly
+		ptr[1] = 5;
+		NSLog(@"ptr == %i", myArray[1]);
+
+		// or this way. they key point here is that the compiler
+		// will look after the size of the inc/decrement depending
+		// on what the array objects are
+		*(ptr + 1) = 6;
+		NSLog(@"ptr == %i", myArray[1]);
+
+		// or increment/decrement
+		*(++ptr) = 7;
+		NSLog(@"ptr == %i", myArray[1]);
+
+	    [pool drain];
+	    return 0;
+	}
+</pre>
+
+Gives us:
+
+<pre class='brush:bash,gutter:false'>
+08:10:13.356 Pointers[3588:903] ptr == 1
+08:10:13.359 Pointers[3588:903] ptr == 1
+08:10:13.359 Pointers[3588:903] ptr == 5
+08:10:13.360 Pointers[3588:903] ptr == 6
+08:10:13.360 Pointers[3588:903] ptr == 7
+</pre>
+
+h4. Functions
+
+Finally, its worth noting that you can declare a pointer to a function.
+
+<pre class='brush:cpp,gutter:false'>
+	#import <Foundation/Foundation.h>
+
+	void myfunc(int *a, int *b)
+	{
+		int temp;
+		temp = *a;
+		*a = *b;
+		*b = temp;
+	}
+
+	int main (int argc, const char * argv[]) {
+	    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+
+		int a = 1, b = 2;
+
+		// before function
+		NSLog(@"a, b == %i, %i", a, b);
+
+		// vanilla
+		myfunc(&a, &b);
+		NSLog(@"a, b == %i, %i", a, b);
+
+		// we can declare a pointer to a function
+		// note the parentheses around the function name
+		void (*ptr) (int *a, int *b);
+		ptr = myfunc;
+
+		// using the ptr
+		ptr(&a, &b);
+		NSLog(@"a, b == %i, %i", a, b);
+
+	    [pool drain];
+	    return 0;
+	}
+</pre>
+
+Point to my function baby.
+
+<pre class='brush:bash,gutter:false'>
+08:12:16.534 Pointers[3608:903] a, b == 1, 2
+08:12:16.536 Pointers[3608:903] a, b == 2, 1
+08:12:16.537 Pointers[3608:903] a, b == 1, 2
+</pre>
+</div>
 </div>
