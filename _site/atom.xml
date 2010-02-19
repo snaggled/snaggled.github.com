@@ -4,7 +4,7 @@
  <title>Philip Mcmahon</title>
  <link href="http://snaggled.github.com/atom.xml" rel="self"/>
  <link href="http://snaggled.github.com/"/>
- <updated>2010-02-18T21:57:38-07:00</updated>
+ <updated>2010-02-19T07:29:48-07:00</updated>
  <id>http://snaggled.github.com/</id>
  <author>
    <name>Philip Mcmahon</name>
@@ -13,27 +13,115 @@
 
  
  <entry>
-   <title>New Layout & Style</title>
+   <title>Pointers - We Meet Again</title>
+   <link href="/2010/02/19/Pointers-We-Meet-Again.html"/>
+   <updated>2010-02-19T00:00:00-07:00</updated>
+   <id>/2010/02/19/Pointers-We-Meet-Again</id>
+   <content type="html">&lt;h2&gt;&lt;a href=&quot;/2010/02/19/Pointers-We-Meet-Again.html&quot;&gt;Pointers &amp;#8211; We Meet Again&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;18 Feb 2010 &amp;#8211; Denver, CO&lt;/p&gt;
+&lt;div id=&quot;post-1&quot; class=&quot;post&quot;&gt;
+&lt;div class=&quot;entry&quot;&gt;
+&lt;p&gt;After switching to Java, Python and eventually Ruby, I honestly, honestly thought I&amp;#8217;d never see another pointer again in my life. I&amp;#8217;m still traumatized by the 4000 lines of X/Motif code I wrote as part of my undergraduate thesis many years ago. Nonetheless, it appears that he who wants to code on the IPhone must take a refresher, so here it is.&lt;/p&gt;
+&lt;h3&gt;Pointers&lt;/h3&gt;
+&lt;p&gt;Variable, meet pointer, who is nothing more than a memory address with your address in it.&lt;/p&gt;
+&lt;pre class='brush:cpp,gutter:false'&gt; 
+	#import &amp;lt;Foundation/Foundation.h&amp;gt;
+
+	int main (int argc, const char * argv[]) {
+	    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+
+	    int count = 1;
+		int *ptr;
+
+		// ptr is equal to the address of count
+		ptr = &amp;amp;count;
+		NSLog(@&quot;count = %i, ptr = %i&quot;, count, *ptr);
+
+		// contents of ptr is equal to the contents of count
+		count = 2;
+		*ptr = count;
+		NSLog(@&quot;count = %i, ptr = %i&quot;, count, *ptr);
+
+		// ptr is actually a memory address
+		NSLog(@&quot;ptr == %i&quot;, ptr);
+
+	    [pool drain];
+	    return 0;
+	}
+&lt;/pre&gt;
+&lt;p&gt;Gives us:&lt;/p&gt;
+&lt;pre class='brush:cpp,gutter:false'&gt;
+2010-02-19 07:07:26.919 Pointers[1958:903] count = 1, ptr = 1
+2010-02-19 07:07:26.922 Pointers[1958:903] count = 2, ptr = 2
+2010-02-19 07:07:26.923 Pointers[1958:903] ptr == 1606414028
+&lt;/pre&gt;
+&lt;h4&gt;Structs&lt;/h4&gt;
+&lt;p&gt;Pointer, meet struct. You two shall become very familiar. In fact, theres even some funky shorthand you can use together.&lt;/p&gt;
+&lt;pre class='brush:cpp,gutter:false'&gt;
+	int main (int argc, const char * argv[]) {
+	    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+
+		struct date 
+		{
+			int month;
+			int day;
+			int year;
+		};
+
+		struct date today;
+		struct date *ptr;
+
+		today.month = 2;
+		today.day = 19;
+		today.year = 2010;
+
+		// ptr points to today
+		ptr = &amp;amp;today;
+
+		// ptr is actually a memory address
+		NSLog(@&quot;t == %i&quot;, ptr);
+
+		// we can still access the elements of thr struct
+		NSLog(@&quot;t == %i&quot;, (*ptr).month);
+
+		// but we also get this cool shorthand
+		NSLog(@&quot;t == %i&quot;, ptr-&amp;gt;year);	
+
+	    [pool drain];
+	    return 0;
+	}
+&lt;/pre&gt;
+&lt;p&gt;The product of your union (fnar, fnar):&lt;/p&gt;
+&lt;pre class='brush:cpp,gutter:false'&gt;
+2010-02-19 07:16:58.706 Pointers[2360:903] t = 1606413984
+2010-02-19 07:16:58.709 Pointers[2360:903] t = 2
+2010-02-19 07:16:58.709 Pointers[2360:903] t = 2010
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>New Layout and Style</title>
    <link href="/2010/02/18/new-layout-and-style.html"/>
    <updated>2010-02-18T00:00:00-07:00</updated>
    <id>/2010/02/18/new-layout-and-style</id>
-   <content type="html">&lt;h2&gt;&lt;a href=&quot;/2010/02/18/new-layout-and-style.html&quot;&gt;New Layout &amp;amp; Style&lt;/a&gt;&lt;/h2&gt;
+   <content type="html">&lt;h2&gt;&lt;a href=&quot;/2010/02/18/new-layout-and-style.html&quot;&gt;New Layout and Style&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;18 Feb 2010 &amp;#8211; Denver, CO&lt;/p&gt;
 &lt;div id=&quot;post-1&quot; class=&quot;post&quot;&gt;
 &lt;div class=&quot;entry&quot;&gt;
 &lt;p&gt;First post of the new year, and a shiny new look to boot. Been spending my early morning (thank you Dunkin Donuts coffee) reading this:&lt;br /&gt;
-&lt;br/&gt;&lt;img src=&quot;http://www.informit.com/ShowCover.aspx?isbn=0321566157&quot;/&gt;&lt;br /&gt;
+&lt;br/&gt;&lt;img src=&quot;http://www.informit.com/ShowCover.aspx?isbn=0321566157&quot; alt=&quot;Programming in Objective C 2.0&quot;/&gt;&lt;br /&gt;
 &lt;br/&gt;First reviews and notes to hopefully start this weekend.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;</content>
  </entry>
  
  <entry>
-   <title>Blocks & Procs in Ruby</title>
+   <title>Blocks and Procs in Ruby</title>
    <link href="/2009/05/14/blocks-and-procs-in-ruby.html"/>
    <updated>2009-05-14T00:00:00-06:00</updated>
    <id>/2009/05/14/blocks-and-procs-in-ruby</id>
-   <content type="html">&lt;h2&gt;&lt;a href=&quot;/2009/05/14/blocks-and-procs-in-ruby.html&quot;&gt;Blocks &amp;amp; Procs in Ruby&lt;/a&gt;&lt;/h2&gt;
+   <content type="html">&lt;h2&gt;&lt;a href=&quot;/2009/05/14/blocks-and-procs-in-ruby.html&quot;&gt;Blocks and Procs in Ruby&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;14 May 2009 &amp;#8211; Denver, CO&lt;/p&gt;
 &lt;div id=&quot;post-1&quot; class=&quot;post&quot;&gt;
 &lt;div class=&quot;entry&quot;&gt;

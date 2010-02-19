@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Blocks & Procs in Ruby
+title: Blocks and Procs in Ruby
 ---
 
 h2. <a href="{{ page.url }}">{{ page.title }}</a>

@@ -1,0 +1,99 @@
+---
+layout: post
+title: Pointers - We Meet Again
+---
+
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
+
+18 Feb 2010 - Denver, CO
+
+<div id="post-1" class="post">
+<div class="entry">
+
+After switching to Java, Python and eventually Ruby, I honestly, honestly thought I'd never see another pointer again in my life. I'm still traumatized by the 4000 lines of X/Motif code I wrote as part of my undergraduate thesis many years ago. Nonetheless, it appears that he who wants to code on the IPhone must take a refresher, so here it is.
+
+h3. Pointers
+
+Variable, meet pointer, who is nothing more than a memory address with your address in it.
+
+<pre class='brush:cpp,gutter:false'> 
+	#import <Foundation/Foundation.h>
+
+	int main (int argc, const char * argv[]) {
+	    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+
+	    int count = 1;
+		int *ptr;
+
+		// ptr is equal to the address of count
+		ptr = &count;
+		NSLog(@"count = %i, ptr = %i", count, *ptr);
+
+		// contents of ptr is equal to the contents of count
+		count = 2;
+		*ptr = count;
+		NSLog(@"count = %i, ptr = %i", count, *ptr);
+
+		// ptr is actually a memory address
+		NSLog(@"ptr == %i", ptr);
+
+	    [pool drain];
+	    return 0;
+	}
+</pre>
+
+Gives us:
+
+<pre class='brush:cpp,gutter:false'>
+2010-02-19 07:07:26.919 Pointers[1958:903] count = 1, ptr = 1
+2010-02-19 07:07:26.922 Pointers[1958:903] count = 2, ptr = 2
+2010-02-19 07:07:26.923 Pointers[1958:903] ptr == 1606414028
+</pre>
+
+h4. Structs
+
+Pointer, meet struct. You two shall become very familiar. In fact, theres even some funky shorthand you can use together.
+
+<pre class='brush:cpp,gutter:false'>
+	int main (int argc, const char * argv[]) {
+	    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+
+		struct date 
+		{
+			int month;
+			int day;
+			int year;
+		};
+
+		struct date today;
+		struct date *ptr;
+
+		today.month = 2;
+		today.day = 19;
+		today.year = 2010;
+
+		// ptr points to today
+		ptr = &today;
+
+		// ptr is actually a memory address
+		NSLog(@"t == %i", ptr);
+
+		// we can still access the elements of thr struct
+		NSLog(@"t == %i", (*ptr).month);
+
+		// but we also get this cool shorthand
+		NSLog(@"t == %i", ptr->year);	
+
+	    [pool drain];
+	    return 0;
+	}
+</pre>
+
+The product of your union (fnar, fnar):
+
+<pre class='brush:cpp,gutter:false'>
+2010-02-19 07:16:58.706 Pointers[2360:903] t = 1606413984
+2010-02-19 07:16:58.709 Pointers[2360:903] t = 2
+2010-02-19 07:16:58.709 Pointers[2360:903] t = 2010
+</pre></div>
+</div>

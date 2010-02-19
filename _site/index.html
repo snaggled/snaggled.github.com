@@ -42,23 +42,96 @@
 		<div id="page">
 			<div id="content" class="narrowcolumn">
 				
-<h2><a href="/2010/02/18/new-layout-and-style.html">New Layout &amp; Style</a></h2>
+<h2><a href="/2010/02/19/Pointers-We-Meet-Again.html">Pointers &#8211; We Meet Again</a></h2>
 <p>18 Feb 2010 &#8211; Denver, CO</p>
 <div id="post-1" class="post">
 <div class="entry">
-<p>First post of the new year, and a shiny new look to boot. Been spending my early morning (thank you Dunkin Donuts coffee) reading this:<br />
-<br/><img src="http://www.informit.com/ShowCover.aspx?isbn=0321566157"/><br />
-<br/>First reviews and notes to hopefully start this weekend.</p>
-</div>
+<p>After switching to Java, Python and eventually Ruby, I honestly, honestly thought I&#8217;d never see another pointer again in my life. I&#8217;m still traumatized by the 4000 lines of X/Motif code I wrote as part of my undergraduate thesis many years ago. Nonetheless, it appears that he who wants to code on the IPhone must take a refresher, so here it is.</p>
+<h3>Pointers</h3>
+<p>Variable, meet pointer, who is nothing more than a memory address with your address in it.</p>
+<pre class='brush:cpp,gutter:false'> 
+	#import &lt;Foundation/Foundation.h&gt;
+
+	int main (int argc, const char * argv[]) {
+	    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+
+	    int count = 1;
+		int *ptr;
+
+		// ptr is equal to the address of count
+		ptr = &amp;count;
+		NSLog(@"count = %i, ptr = %i", count, *ptr);
+
+		// contents of ptr is equal to the contents of count
+		count = 2;
+		*ptr = count;
+		NSLog(@"count = %i, ptr = %i", count, *ptr);
+
+		// ptr is actually a memory address
+		NSLog(@"ptr == %i", ptr);
+
+	    [pool drain];
+	    return 0;
+	}
+</pre>
+<p>Gives us:</p>
+<pre class='brush:cpp,gutter:false'>
+2010-02-19 07:07:26.919 Pointers[1958:903] count = 1, ptr = 1
+2010-02-19 07:07:26.922 Pointers[1958:903] count = 2, ptr = 2
+2010-02-19 07:07:26.923 Pointers[1958:903] ptr == 1606414028
+</pre>
+<h4>Structs</h4>
+<p>Pointer, meet struct. You two shall become very familiar. In fact, theres even some funky shorthand you can use together.</p>
+<pre class='brush:cpp,gutter:false'>
+	int main (int argc, const char * argv[]) {
+	    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+
+		struct date 
+		{
+			int month;
+			int day;
+			int year;
+		};
+
+		struct date today;
+		struct date *ptr;
+
+		today.month = 2;
+		today.day = 19;
+		today.year = 2010;
+
+		// ptr points to today
+		ptr = &amp;today;
+
+		// ptr is actually a memory address
+		NSLog(@"t == %i", ptr);
+
+		// we can still access the elements of thr struct
+		NSLog(@"t == %i", (*ptr).month);
+
+		// but we also get this cool shorthand
+		NSLog(@"t == %i", ptr-&gt;year);	
+
+	    [pool drain];
+	    return 0;
+	}
+</pre>
+<p>The product of your union (fnar, fnar):</p>
+<pre class='brush:cpp,gutter:false'>
+2010-02-19 07:16:58.706 Pointers[2360:903] t = 1606413984
+2010-02-19 07:16:58.709 Pointers[2360:903] t = 2
+2010-02-19 07:16:58.709 Pointers[2360:903] t = 2010
+</pre></div>
 </div>
 
 			</div>
 			<div id="sidebar">
 				<ul>
-					<li id="twit" class="widget">
+					<li id="twitl" class="widget">
 						<div class="textwidget">
 							<a href="http://twitter.com/snaggled">
-							<div id="twit"></div></a>
+								<div id="twit"/></div>
+							</a>
 						</div>
 					</li>
 					<li id="pages" class="widget">
@@ -95,12 +168,17 @@
 							
 							
 							<li class="page_item">
-								<a href="/2010/02/18/new-layout-and-style.html">New Layout & Style</a>
+								<a href="/2010/02/19/Pointers-We-Meet-Again.html">Pointers - We Meet Again</a>
 							</li>
 							
 							
 							<li class="page_item">
-								<a href="/2009/05/14/blocks-and-procs-in-ruby.html">Blocks & Procs in Ruby</a>
+								<a href="/2010/02/18/new-layout-and-style.html">New Layout and Style</a>
+							</li>
+							
+							
+							<li class="page_item">
+								<a href="/2009/05/14/blocks-and-procs-in-ruby.html">Blocks and Procs in Ruby</a>
 							</li>
 							
 							
@@ -111,11 +189,6 @@
 							
 							<li class="page_item">
 								<a href="/2009/03/16/temp-files-in-mongrel.html">Too Many Open Files in Rails - Temp Files in Mongrel</a>
-							</li>
-							
-							
-							<li class="page_item">
-								<a href="/2009/01/28/singletons_classes_or_eigenclasses.html">Singleton classes or Eigenclasses</a>
 							</li>
 							
 							
@@ -149,7 +222,7 @@
 		<div id="footer">
 			<p>
 				snaggled.github.com proudly powered by <a href="http://github.com/mojombo/jekyll">jekyll</a> 
-				& hosted by <a href="http://github.com">github</a>.
+				and hosted by <a href="http://github.com">github</a>.
 				<br/>Javascript by the awesome <a href="http://jquery.com/">jQuery</a> with syntax highlighting by <a href="http://alexgorbatchev.com/">SyntaxHighlighter</a>.
 				<br/>The CSS is a modified wordpress theme originally from <a href="http://www.ahsanulhaque.com/">here</a> and <a href="http://www.genaehr.com/minimalism/">here</a>.
 

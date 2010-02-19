@@ -4,7 +4,7 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title>
-			Using the GitHub API to Display your Repositories
+			Pointers - We Meet Again
 		</title>
 		<meta name="author" content="Philip Mcmahon" />
 		<meta name="description" content="Philip Mcmahon (snaggled) blog about ruby, objectiveC, rails and iphone programming"/>
@@ -41,11 +41,87 @@
 		</div>
 		<div id="page">
 			<div id="content" class="narrowcolumn">
-				<h1>Using the GitHub <span class="caps">API</span> to Display your Repositories</h1>
-<p class="meta">29 Dec 2008 &#8211; Draperstown, Northern Ireland</p>
-<p>I wanted to display a list of my repositories on my homepage. Spent a while fluffing about with the <a href="http://docs.jquery.com/Ajax/jQuery.getJSON">jQuery.getJSON</a> call, but in the end found it preferable to use the callback parameter combined with <a href="http://docs.jquery.com/Ajax/jQuery.getScript">jQuery.getScript</a>.</p>
-<p>Heres the code, which will populate a div with the id &#8216;repos&#8217;:</p>
-<script src='http://pastie.org/349089.js'></script>
+				<h2><a href="/2010/02/19/Pointers-We-Meet-Again.html">Pointers &#8211; We Meet Again</a></h2>
+<p>18 Feb 2010 &#8211; Denver, CO</p>
+<div id="post-1" class="post">
+<div class="entry">
+<p>After switching to Java, Python and eventually Ruby, I honestly, honestly thought I&#8217;d never see another pointer again in my life. I&#8217;m still traumatized by the 4000 lines of X/Motif code I wrote as part of my undergraduate thesis many years ago. Nonetheless, it appears that he who wants to code on the IPhone must take a refresher, so here it is.</p>
+<h3>Pointers</h3>
+<p>Variable, meet pointer, who is nothing more than a memory address with your address in it.</p>
+<pre class='brush:cpp,gutter:false'> 
+	#import &lt;Foundation/Foundation.h&gt;
+
+	int main (int argc, const char * argv[]) {
+	    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+
+	    int count = 1;
+		int *ptr;
+
+		// ptr is equal to the address of count
+		ptr = &amp;count;
+		NSLog(@"count = %i, ptr = %i", count, *ptr);
+
+		// contents of ptr is equal to the contents of count
+		count = 2;
+		*ptr = count;
+		NSLog(@"count = %i, ptr = %i", count, *ptr);
+
+		// ptr is actually a memory address
+		NSLog(@"ptr == %i", ptr);
+
+	    [pool drain];
+	    return 0;
+	}
+</pre>
+<p>Gives us:</p>
+<pre class='brush:cpp,gutter:false'>
+2010-02-19 07:07:26.919 Pointers[1958:903] count = 1, ptr = 1
+2010-02-19 07:07:26.922 Pointers[1958:903] count = 2, ptr = 2
+2010-02-19 07:07:26.923 Pointers[1958:903] ptr == 1606414028
+</pre>
+<h4>Structs</h4>
+<p>Pointer, meet struct. You two shall become very familiar. In fact, theres even some funky shorthand you can use together.</p>
+<pre class='brush:cpp,gutter:false'>
+	int main (int argc, const char * argv[]) {
+	    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+
+		struct date 
+		{
+			int month;
+			int day;
+			int year;
+		};
+
+		struct date today;
+		struct date *ptr;
+
+		today.month = 2;
+		today.day = 19;
+		today.year = 2010;
+
+		// ptr points to today
+		ptr = &amp;today;
+
+		// ptr is actually a memory address
+		NSLog(@"t == %i", ptr);
+
+		// we can still access the elements of thr struct
+		NSLog(@"t == %i", (*ptr).month);
+
+		// but we also get this cool shorthand
+		NSLog(@"t == %i", ptr-&gt;year);	
+
+	    [pool drain];
+	    return 0;
+	}
+</pre>
+<p>The product of your union (fnar, fnar):</p>
+<pre class='brush:cpp,gutter:false'>
+2010-02-19 07:16:58.706 Pointers[2360:903] t = 1606413984
+2010-02-19 07:16:58.709 Pointers[2360:903] t = 2
+2010-02-19 07:16:58.709 Pointers[2360:903] t = 2010
+</pre></div>
+</div>
 
 			</div>
 			<div id="sidebar">

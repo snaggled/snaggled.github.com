@@ -1,6 +1,6 @@
 ---
 layout: post
-title: New Layout & Style
+title: New Layout and Style
 ---
 
 h2. <a href="{{ page.url }}">{{ page.title }}</a>
@@ -10,7 +10,7 @@ h2. <a href="{{ page.url }}">{{ page.title }}</a>
 <div id="post-1" class="post">
 <div class="entry">
 First post of the new year, and a shiny new look to boot. Been spending my early morning (thank you Dunkin Donuts coffee) reading this:
-<br/><img src="http://www.informit.com/ShowCover.aspx?isbn=0321566157"/>
+<br/><img src="http://www.informit.com/ShowCover.aspx?isbn=0321566157" alt="Programming in Objective C 2.0"/>
 <br/>First reviews and notes to hopefully start this weekend.
 </div>
 </div>
