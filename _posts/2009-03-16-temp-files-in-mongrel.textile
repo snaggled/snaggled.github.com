@@ -3,15 +3,18 @@ layout: post
 title: Too Many Open Files in Rails - Temp Files in Mongrel
 ---
 
-h1. {{ page.title }}
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
 
-p(meta). 16 Mar 2009 - Denver, CO
+16 Mar 2009 - Denver, CO
 
+<div id="post-1" class="post">
+<div class="entry">
+	
 I've had a whole bunch of pain the last couple of days with "mongrel":http://mongrel.rubyforge.org/ dumping tmp files on me and filling up my ulimit quota causing Rails to fall over.
 
 It started when I started posting a bunch of multi-part files to Rails and letting "attachment_fu":http://github.com/technoweenie/attachment_fu/tree/master do the dirty-work, but I quickly hit upon this:
 
-<pre>
+<pre class='brush:ruby,gutter:false'> 
 Processing DocumentsController#create to xml ...
 ...
 
@@ -23,14 +26,14 @@ MissingSourceFile (no such file to load -- .../git/eiger/app/models/document.rb)
 
 A quick check meant:
 
-<pre>
+<pre class='brush:ruby,gutter:false'> 
 :eiger philipmcmahon$ ulimit -n
 256
 </pre>
 
 		and
 
-<pre>
+<pre class='brush:ruby,gutter:false'> 
 :~ philipmcmahon$ lsof /dev/disk0s2 | grep mongrel |  wc -l
 245
 
@@ -62,3 +65,4 @@ Holy shit!
 I have no idea what those file-pointers are, but I do know that they are caused by the file part of multi-part form upload data. For a while I thought it was related to creating Tempfile classes, but after it while it became clear that it was mongrel doing whatever.
 
 To cut a long story short, I switched to "webrick":http://www.webrick.org/ and the problem went away.
+</div></div>

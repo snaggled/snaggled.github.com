@@ -1,45 +1,80 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
-<head>
-   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-   <title>Singleton classes or Eigenclasses</title>
-   <meta name="author" content="Philip Mcmahon" />
-   <link href="http://snaggled.github.com" rel="alternate" title="Philip Mcmahon" type="application/atom+xml" />
-   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
-   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
-   <!--<script src="http://code.jquery.com/jquery-latest.js"></script>-->
-	<script src= "http://ajax.googleapis.com/ajax/libs/jquery/1.2/jquery.min.js"></script>
-	  <script>
-      	function parseRepo(data){
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>
+			Singleton classes or Eigenclasses
+		</title>
+		<meta name="author" content="Philip Mcmahon" />
+		<meta name="description" content="Philip Mcmahon (snaggled) blog about ruby, objectiveC, rails and iphone programming"/>
+		<meta name="keywords" content="ruby,rails,iphone,objc,objectivec,github"/>
+		<link href="http://snaggled.github.com" rel="alternate" title="Philip Mcmahon" type="application/atom+xml" />
+		<link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+		<link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+		<script src="/js/jquery-1.2.js" type="text/javascript"></script>
+		<script src="/js/syntax.js" type="text/javascript"></script>
+		<script type="text/javascript">
+		//<![CDATA[
+		function parseRepo(data){
 			var ul = $("<ul>").attr("class", "posts");
-	      	$.each(data.user.repositories, function(i, repo) {
+			$.each(data.user.repositories, function(i, repo) {
 				var a = $("<a>").attr("href", repo.url).text(repo.name);
-				var li = $("<li>").text(" - " + repo.description);
+				var li = $("<li>");//.text(" - " + repo.description);
 				a.prependTo(li);
+				
 				li.appendTo(ul);
-	          });
+			  });
+				
 			console.info("appending " + ul + " to repos");
 			$(ul).appendTo("#repos");
-    	}
-	  	$.getScript("http://github.com/api/v1/json/snaggled?callback=parseRepo");
-	  </script>
-</head>
-<body>
-
-<div class="site">
-  <div class="title">
-    <a href="/">Philip Mcmahon</a>
-    <a class="extra" href="http://github.com/snaggled">GitHub Home</a>
-  </div>
-  
-  <div id="post">
-<h1>Singleton classes or Eigenclasses</h1>
-<p class="meta">28 Jan 2009 &#8211; Miami, FL</p>
+		}
+		$.getScript("http://github.com/api/v1/json/snaggled?callback=parseRepo");
+		//]]>
+		</script>
+	</head>
+	<body>
+		<div id="header">
+			<div id="h99">
+				<a href="/">Philip Mcmahon</a> &gt;&gt;&gt; Vir prudens contra ventum non mingit
+			</div>
+		</div>
+		<div id="page">
+			<div id="content" class="narrowcolumn">
+				<h2><a href="/2009/01/28/singletons_classes_or_eigenclasses.html">Singleton classes or Eigenclasses</a></h2>
+<p>28 Jan 2009 &#8211; Las Vegas, NV</p>
+<div id="post-1" class="post">
+<div class="entry">
 <p>Vegas for the week at a conference. In the Java world, &#8216;Singleton&#8217; (at least to me) usually referred to the design pattern which allowed you to ensure that there would always only be a maximum of one object instance of a particular class. It was usually implemented by making the constructor private and providing an access method that returned a single (usually static) instance of an singular object. It might looked something like this:</p>
-<script src='http://pastie.org/373956.js'></script><p>Things appear to be slightly different in the Ruby world. A <i>singleton</i> or <i>eigenclass</i> in the Ruby world refers to a particular instance of an object, and ruby allows us to override the methods and behaviors of a particular object (note &#8211; not class).</p>
-<pre>
+<pre class='brush:java,gutter:false'> 
+
+public class SingletonExample {
+
+	/**
+	 * Private class variable
+	 */
+	private static SingletonExample singleton;
+	
+	/**
+	 * This is the only method available to access the class variable.
+	 * @return the singleton instance
+	 */
+	public static SingletonExample onlyInstance() {
+		if (singleton == null)
+			singleton = new SingletonExample();
+		return singleton;
+	}
+	
+	/**
+	 * The Ctr should be private
+	 */
+	private SingletonExample() {
+	}
+}
+
+</pre>
+<p>Things appear to be slightly different in the Ruby world. A <i>singleton</i> or <i>eigenclass</i> in the Ruby world refers to a particular instance of an object, and ruby allows us to override the methods and behaviors of a particular object (note &#8211; not class).</p>
+<pre class='brush:ruby,gutter:false'> 
 	?&gt; class A
 	&gt;&gt; end
 	=&gt; nil
@@ -60,41 +95,124 @@
 	=&gt; #&lt;A:0x5ee1d8&gt;
 </pre>
 <p>For more checkout: <a href="http://whytheluckystiff.net/articles/seeingMetaclassesClearly.html">whytheluckystiff</a>.</p>
-</div>
-  
-  <div class="footer">
-    <div class="contact">
-      <p>
-        Philip Mcmahon<br />
-        philip@packetnode.com<br/>
-		credits: <a href="http://github.com/mojombo">mojombo</a><br/>
-      </p>
-    </div>
-    <div class="contact">
-      <p>
-        <a href="http://github.com/snaggled/">github.com/snaggled</a><br />
-        <a href="http://twitter.com/snaggled/">twitter.com/snaggled</a><br />
-        <a href="http://rubyforge.org/users/snaggled/">rubyforge.org/users/snaggled/</a><br />
-      </p>
-    </div>
-    <div class="rss">
-      <a href="http://feeds.feedburner.com/snaggled">
-        <img src="/images/rss.png" alt="Subscribe to RSS Feed" />
-      </a>
-    </div>
-  </div>
-</div>	
+<p></div></div></p>
 
-<a href="http://github.com/snaggled"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+			</div>
+			<div id="sidebar">
+				<ul>
+					<li id="twit" class="widget">
+						<div class="textwidget">
+							<a href="http://twitter.com/snaggled">
+							<div id="twit"></div></a>
+						</div>
+					</li>
+					<li id="pages" class="widget">
+						<h2 class="widgettitle">
+							Pages
+						</h2>
+					</li>
+					<li>
+						<ul>
+							<li class="page_item">
+								<a href="http://github.com/snaggled/">github</a>
+							</li>
+							<li class="page_item">
+								<a href="http://twitter.com/snaggled/">twitter</a>
+							</li>
+							<li class="page_item">
+								<a href="http://rubyforge.org/users/snaggled/">rubyforge</a>
+							</li>
+							<li class="page_item">
+								<a href="http://feeds.feedburner.com/snaggled">feedburner</a>
+							</li>
+							<li class="page_item">
+								<a href="mailto:philip@packetnode.com">mail</a>
+							</li>
+						</ul>
+					</li>
+					<li id="posts" class="widget">
+						<h2 class="widgettitle">
+							Recent Posts
+						</h2>
+					</li>
+					<li>
+						<ul>
+							
+							
+							<li class="page_item">
+								<a href="/2010/02/18/new-layout-and-style.html">New Layout & Style</a>
+							</li>
+							
+							
+							<li class="page_item">
+								<a href="/2009/05/14/blocks-and-procs-in-ruby.html">Blocks & Procs in Ruby</a>
+							</li>
+							
+							
+							<li class="page_item">
+								<a href="/2009/04/29/method-params-in-ruby.html">Method Params in Ruby</a>
+							</li>
+							
+							
+							<li class="page_item">
+								<a href="/2009/03/16/temp-files-in-mongrel.html">Too Many Open Files in Rails - Temp Files in Mongrel</a>
+							</li>
+							
+							
+							<li class="page_item">
+								<a href="/2009/01/28/singletons_classes_or_eigenclasses.html">Singleton classes or Eigenclasses</a>
+							</li>
+							
+							
+						</ul>
+					</li>
+					<li id="github" class="widget">
+						<h2 class="widgettitle">
+							Github Repos
+						</h2>
+					</li>
+					<li style="list-style: none">
+						<div id="repos"></div>
+					</li>
+					<li id="project" class="widget">
+						<h2 class="widgettitle">
+							Projects
+						</h2>
+					</li>
+					<li>
+						<ul>
+							<li class="page_item">
+								<a href="http://geosack.com">geosack</a>
+							</li>
+							<li class="page_item">
+								<a href="http://packetnode.com">packetnode</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		<div id="footer">
+			<p>
+				snaggled.github.com proudly powered by <a href="http://github.com/mojombo/jekyll">jekyll</a> 
+				& hosted by <a href="http://github.com">github</a>.
+				<br/>Javascript by the awesome <a href="http://jquery.com/">jQuery</a> with syntax highlighting by <a href="http://alexgorbatchev.com/">SyntaxHighlighter</a>.
+				<br/>The CSS is a modified wordpress theme originally from <a href="http://www.ahsanulhaque.com/">here</a> and <a href="http://www.genaehr.com/minimalism/">here</a>.
 
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-1855850-4");
-pageTracker._trackPageview();
-} catch(err) {}</script>
-</body>
+			</p>
+		</div>
+		</div>
+		<script type="text/javascript">
+		//<![CDATA[
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		//]]>
+		</script><script type="text/javascript">
+		//<![CDATA[
+		try {
+		var pageTracker = _gat._getTracker("UA-1855850-4");
+		pageTracker._trackPageview();
+		} catch(err) {}
+		//]]>
+		</script>
+	</body>
 </html>

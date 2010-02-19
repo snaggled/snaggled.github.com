@@ -3,17 +3,19 @@ layout: post
 title: Blocks & Procs in Ruby
 ---
 
-h1. {{ page.title }}
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
 
-p(meta). 14 May 2009 - Denver, CO
+14 May 2009 - Denver, CO
 
+<div id="post-1" class="post">
+<div class="entry">
 So, in addition to a minor re-org (took the last post of the front page and decided to just show a list of posts), I continued reading "this":http://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Method_Calls awesome article. Here's the distilled version.
 
-*Procs*
+h3. *Procs*
 
 A Proc, at its simplest, is a block of code that has been bound to a local variable, also known in various forms (some of these more accurate than other) as "function objects", "functors" and "closures". They act like any other "first-class" objects, can be passed around, stored in data-structures.
 
-{% highlight irb %}
+<pre class='brush:ruby,gutter:false'> 
 >> def foo(a, b)
 >> a.call(b)
 >> end
@@ -25,51 +27,50 @@ A Proc, at its simplest, is a block of code that has been bound to a local varia
 >> foo(a, b)
 'a' being executed on param hello
 => nil
-{% endhighlight %}
+</pre>
 
 In the above example, we've created a proc "a" which accepts params "param". When we pass both to foo, it simply calls "a" and passes "b" in.
 
 We have a choice when creating procs - between "Proc.new" and "lamdba".
 
-{% highlight irb %}
+<pre class='brush:ruby,gutter:false'> 
 ?> x = lambda {|y| puts y}
 => #<Proc:0x0057a24c@(irb):16>
 >> x.call("hello")
 hello
 => nil
-{% endhighlight %}
+</pre>
 
 In short, they differ slightly in how the return from methods (Proc.new created Procs will return immediately, lambda will not) and the fact that lambda does parameter checking and Proc.new does not.
 
-*Methods*
+h3. Methods
 
 Methods are blocks of code, bound to an object, that have access to its instance variables. The interesting thing about a method here is that you can define 'top-level' methods, which is implicitly bound to the "Object":http://www.ruby-doc.org/core/classes/Object.html class.
 
-{% highlight irb %}
+<pre class='brush:ruby,gutter:false'> 
 >> def s; puts "s"; end
 => nil
 >> p Object.methods
-["inspect", "private_class_method", "const_missing", "clone", "method", "public_methods", "public_instance_methods", "instance_variable_defined?", "method_defined?", "superclass", "equal?", "freeze", "included_modules", "const_get", "yaml_as", "methods", "respond_to?", "module_eval", "class_variables", "dup", "protected_instance_methods", "instance_variables", "public_method_defined?", "__id__", "object_id", "eql?", "taguri", "yaml_tag_read_class", "const_set", "id", "singleton_methods", "to_yaml", "taguri=", "send", "class_eval", "taint", "frozen?", "instance_variable_get", "include?", "private_instance_methods", "__send__", "instance_of?", "private_method_defined?", "to_a", "name", "to_yaml_style", "autoload", "type", "new", "yaml_tag_class_name", "<", "protected_methods", "instance_eval", "<=>", "==", ">", "display", "===", "instance_method", "instance_variable_set", "yaml_tag_subclasses?", "to_yaml_properties", "kind_of?", "extend", "protected_method_defined?", "const_defined?", ">=", "ancestors", "to_s", "<=", "public_class_method", "allocate", "hash", "class", "instance_methods", "tainted?", "=~", "private_methods", "class_variable_defined?", "nil?", "untaint", "constants", "autoload?", "is_a?", "s"]
+["inspect", "private_class_method", "const_missing", "clone", 
+"method", "public_methods", "public_instance_methods", ...
 => nil
 >>
-{% endhighlight %}
-
+</pre>
 And we can also dynamically call the method using "send":http://www.ruby-doc.org/core/classes/Object.html#M000334 (we can pass either a String or the Symbol for the method name).
 
-{% highlight irb %}
+<pre class='brush:ruby,gutter:false'> 
 ?> o = Object.new
 => #<Object:0x5e9cf0>
 >> o.send(:s)
 s
 => nil
 >>
-{% endhighlight %}
-
-*Blocks*
+</pre>
+h3. Blocks
 
 A Block is a (lets called it 'uninstantiated') proc. Its the block of code for example in the braces after the lambda command.
 
-{% highlight irb %}
+<pre class='brush:ruby,gutter:false'> 
 >> x = lambda {"puts i am a proc"}
 => #<Proc:0x005f0924@(irb):1>
 >> def f(func)
@@ -84,7 +85,8 @@ A Block is a (lets called it 'uninstantiated') proc. Its the block of code for e
 => nil
 >> g {"i am a block, implicitly turned into a proc when passed to method"}
 => "i am a block, implicitly turned into a proc when passed to method"
->>
-{% endhighlight %}
-
+</pre>
 On a final note, I've been using "this sidebar":http://www.ruby-doc.org/docbar/ which is truly awesome.
+
+</div>
+</div>

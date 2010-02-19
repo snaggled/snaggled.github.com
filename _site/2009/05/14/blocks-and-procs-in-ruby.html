@@ -4,7 +4,7 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title>
-			Using the GitHub API to Display your Repositories
+			Blocks & Procs in Ruby
 		</title>
 		<meta name="author" content="Philip Mcmahon" />
 		<meta name="description" content="Philip Mcmahon (snaggled) blog about ruby, objectiveC, rails and iphone programming"/>
@@ -41,11 +41,77 @@
 		</div>
 		<div id="page">
 			<div id="content" class="narrowcolumn">
-				<h1>Using the GitHub <span class="caps">API</span> to Display your Repositories</h1>
-<p class="meta">29 Dec 2008 &#8211; Draperstown, Northern Ireland</p>
-<p>I wanted to display a list of my repositories on my homepage. Spent a while fluffing about with the <a href="http://docs.jquery.com/Ajax/jQuery.getJSON">jQuery.getJSON</a> call, but in the end found it preferable to use the callback parameter combined with <a href="http://docs.jquery.com/Ajax/jQuery.getScript">jQuery.getScript</a>.</p>
-<p>Heres the code, which will populate a div with the id &#8216;repos&#8217;:</p>
-<script src='http://pastie.org/349089.js'></script>
+				<h2><a href="/2009/05/14/blocks-and-procs-in-ruby.html">Blocks &amp; Procs in Ruby</a></h2>
+<p>14 May 2009 &#8211; Denver, CO</p>
+<div id="post-1" class="post">
+<div class="entry">
+<p>So, in addition to a minor re-org (took the last post of the front page and decided to just show a list of posts), I continued reading <a href="http://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Method_Calls">this</a> awesome article. Here&#8217;s the distilled version.</p>
+<h3><strong>Procs</strong></h3>
+<p>A Proc, at its simplest, is a block of code that has been bound to a local variable, also known in various forms (some of these more accurate than other) as &#8220;function objects&#8221;, &#8220;functors&#8221; and &#8220;closures&#8221;. They act like any other &#8220;first-class&#8221; objects, can be passed around, stored in data-structures.</p>
+<pre class='brush:ruby,gutter:false'> 
+&gt;&gt; def foo(a, b)
+&gt;&gt; a.call(b)
+&gt;&gt; end
+=&gt; nil
+&gt;&gt;  a = Proc.new {|param| puts "'a' being executed on param #{param}"}
+=&gt; #&lt;Proc:0x00587a14@(irb):4&gt;
+&gt;&gt; b = "hello"
+=&gt; "hello"
+&gt;&gt; foo(a, b)
+'a' being executed on param hello
+=&gt; nil
+</pre>
+<p>In the above example, we&#8217;ve created a proc &#8220;a&#8221; which accepts params &#8220;param&#8221;. When we pass both to foo, it simply calls &#8220;a&#8221; and passes &#8220;b&#8221; in.</p>
+<p>We have a choice when creating procs &#8211; between &#8220;Proc.new&#8221; and &#8220;lamdba&#8221;.</p>
+<pre class='brush:ruby,gutter:false'> 
+?&gt; x = lambda {|y| puts y}
+=&gt; #&lt;Proc:0x0057a24c@(irb):16&gt;
+&gt;&gt; x.call("hello")
+hello
+=&gt; nil
+</pre>
+<p>In short, they differ slightly in how the return from methods (Proc.new created Procs will return immediately, lambda will not) and the fact that lambda does parameter checking and Proc.new does not.</p>
+<h3>Methods</h3>
+<p>Methods are blocks of code, bound to an object, that have access to its instance variables. The interesting thing about a method here is that you can define &#8216;top-level&#8217; methods, which is implicitly bound to the <a href="http://www.ruby-doc.org/core/classes/Object.html">Object</a> class.</p>
+<pre class='brush:ruby,gutter:false'> 
+&gt;&gt; def s; puts "s"; end
+=&gt; nil
+&gt;&gt; p Object.methods
+["inspect", "private_class_method", "const_missing", "clone", 
+"method", "public_methods", "public_instance_methods", ...
+=&gt; nil
+&gt;&gt;
+</pre>
+<p>And we can also dynamically call the method using <a href="http://www.ruby-doc.org/core/classes/Object.html#M000334">send</a> (we can pass either a String or the Symbol for the method name).</p>
+<pre class='brush:ruby,gutter:false'> 
+?&gt; o = Object.new
+=&gt; #&lt;Object:0x5e9cf0&gt;
+&gt;&gt; o.send(:s)
+s
+=&gt; nil
+&gt;&gt;
+</pre>
+<h3>Blocks</h3>
+<p>A Block is a (lets called it &#8216;uninstantiated&#8217;) proc. Its the block of code for example in the braces after the lambda command.</p>
+<pre class='brush:ruby,gutter:false'> 
+&gt;&gt; x = lambda {"puts i am a proc"}
+=&gt; #&lt;Proc:0x005f0924@(irb):1&gt;
+&gt;&gt; def f(func)
+&gt;&gt; func.call
+&gt;&gt; end
+=&gt; nil
+&gt;&gt; f(x)
+=&gt; "puts i am a proc"
+?&gt; def g
+&gt;&gt; yield
+&gt;&gt; end
+=&gt; nil
+&gt;&gt; g {"i am a block, implicitly turned into a proc when passed to method"}
+=&gt; "i am a block, implicitly turned into a proc when passed to method"
+</pre>
+<p>On a final note, I&#8217;ve been using <a href="http://www.ruby-doc.org/docbar/">this sidebar</a> which is truly awesome.</p>
+</div>
+</div>
 
 			</div>
 			<div id="sidebar">

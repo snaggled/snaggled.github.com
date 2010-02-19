@@ -1,61 +1,547 @@
-.highlight  { background: #ffffff; }
-.highlight .c { color: #999988; font-style: italic } /* Comment */
-.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
-.highlight .k { font-weight: bold } /* Keyword */
-.highlight .o { font-weight: bold } /* Operator */
-.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
-.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
-.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
-.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
-.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
-.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
-.highlight .ge { font-style: italic } /* Generic.Emph */
-.highlight .gr { color: #aa0000 } /* Generic.Error */
-.highlight .gh { color: #999999 } /* Generic.Heading */
-.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
-.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
-.highlight .go { color: #888888 } /* Generic.Output */
-.highlight .gp { color: #555555 } /* Generic.Prompt */
-.highlight .gs { font-weight: bold } /* Generic.Strong */
-.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
-.highlight .gt { color: #aa0000 } /* Generic.Traceback */
-.highlight .kc { font-weight: bold } /* Keyword.Constant */
-.highlight .kd { font-weight: bold } /* Keyword.Declaration */
-.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
-.highlight .kr { font-weight: bold } /* Keyword.Reserved */
-.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
-.highlight .m { color: #009999 } /* Literal.Number */
-.highlight .s { color: #d14 } /* Literal.String */
-.highlight .na { color: #008080 } /* Name.Attribute */
-.highlight .nb { color: #0086B3 } /* Name.Builtin */
-.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
-.highlight .no { color: #008080 } /* Name.Constant */
-.highlight .ni { color: #800080 } /* Name.Entity */
-.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
-.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
-.highlight .nn { color: #555555 } /* Name.Namespace */
-.highlight .nt { color: #000080 } /* Name.Tag */
-.highlight .nv { color: #008080 } /* Name.Variable */
-.highlight .ow { font-weight: bold } /* Operator.Word */
-.highlight .w { color: #bbbbbb } /* Text.Whitespace */
-.highlight .mf { color: #009999 } /* Literal.Number.Float */
-.highlight .mh { color: #009999 } /* Literal.Number.Hex */
-.highlight .mi { color: #009999 } /* Literal.Number.Integer */
-.highlight .mo { color: #009999 } /* Literal.Number.Oct */
-.highlight .sb { color: #d14 } /* Literal.String.Backtick */
-.highlight .sc { color: #d14 } /* Literal.String.Char */
-.highlight .sd { color: #d14 } /* Literal.String.Doc */
-.highlight .s2 { color: #d14 } /* Literal.String.Double */
-.highlight .se { color: #d14 } /* Literal.String.Escape */
-.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
-.highlight .si { color: #d14 } /* Literal.String.Interpol */
-.highlight .sx { color: #d14 } /* Literal.String.Other */
-.highlight .sr { color: #009926 } /* Literal.String.Regex */
-.highlight .s1 { color: #d14 } /* Literal.String.Single */
-.highlight .ss { color: #990073 } /* Literal.String.Symbol */
-.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
-.highlight .vc { color: #008080 } /* Name.Variable.Class */
-.highlight .vg { color: #008080 } /* Name.Variable.Global */
-.highlight .vi { color: #008080 } /* Name.Variable.Instance */
-.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
-.highlight .lineno { color: #080808 } /* Linenumber */
+/**
+ * SyntaxHighlighter
+ * http://alexgorbatchev.com/
+ *
+ * SyntaxHighlighter is donationware. If you are using it, please donate.
+ * http://alexgorbatchev.com/wiki/SyntaxHighlighter:Donate
+ *
+ * @version
+ * 2.0.320 (May 03 2009)
+ * 
+ * @copyright
+ * Copyright (C) 2004-2009 Alex Gorbatchev.
+ *
+ * @license
+ * This file is part of SyntaxHighlighter.
+ * 
+ * SyntaxHighlighter is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * SyntaxHighlighter is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with SyntaxHighlighter.  If not, see <http://www.gnu.org/copyleft/lesser.html>.
+ */
+
+
+
+.syntaxhighlighter,
+.syntaxhighlighter div,
+.syntaxhighlighter code,
+.syntaxhighlighter span
+{
+  font-family: "Consolas", "Monaco", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace !important;
+  /*font-family: Monaco,"Bitstream Vera Sans Mono",monospace;*/
+	line-height: 1.2em !important;
+	font-size: 16px !important;
+
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0 !important;
+	background: none !important;
+	text-align: left !important;
+	float: none !important;
+	vertical-align: baseline !important;
+	position: static !important;
+	left: auto !important;
+	top: auto !important;
+	right: auto !important;
+	bottom: auto !important;
+	height: auto !important;
+	width: auto !important;
+	font-weight: normal !important;
+	font-style: normal !important;
+}
+
+.syntaxhighlighter
+{
+	width: 100% !important;
+	margin: 1em 0 1em 0 !important;
+	padding: 1px !important; /* adds a little border on top and bottom */
+	position: relative !important;
+}
+
+.syntaxhighlighter code {
+	display: inline !important;
+}
+
+.syntaxhighlighter .bold {
+	font-weight: bold !important;
+}
+
+.syntaxhighlighter .italic {
+	font-style: italic !important;
+}
+
+.syntaxhighlighter .line .number
+{
+	float: left !important; 
+	width: 3em !important; 
+	padding-right: .3em !important;
+	text-align: right !important;
+	display: block !important;
+}
+
+/* Disable numbers when no gutter option is set */
+.syntaxhighlighter.nogutter .line .number
+{
+	display: none !important;
+}
+
+.syntaxhighlighter .line .content
+{
+	margin-left: 3.3em !important; 
+	padding-left: .5em !important;
+	display: block !important;
+}
+
+.syntaxhighlighter .line .content .block
+{
+	display: block !important;
+	padding-left: 1.5em !important;
+	text-indent: -1.5em !important;
+}
+
+.syntaxhighlighter .line .content .spaces
+{
+	display: none !important;
+}
+
+/* Disable border and margin on the lines when no gutter option is set */
+.syntaxhighlighter.nogutter .line .content
+{
+	margin-left: 0 !important; 
+	border-left: none !important;
+}
+
+.syntaxhighlighter .bar
+{
+	display: none !important;
+}
+
+.syntaxhighlighter .bar.show 
+{
+	display: block !important;
+}
+
+.syntaxhighlighter.collapsed .bar
+{
+	display: block !important;
+}
+
+.syntaxhighlighter.nogutter .ruler
+{
+	margin-left: 0 !important;
+	padding-left: 0 !important;
+}
+
+.syntaxhighlighter .ruler
+{
+	padding: 0 0 .5em .5em !important;
+	margin-left: 3.3em !important;
+	overflow: hidden !important;
+}
+
+/* Adjust some properties when collapsed */
+
+.syntaxhighlighter .lines {
+  padding: 10px;
+
+}
+
+
+.syntaxhighlighter.collapsed .lines,
+.syntaxhighlighter.collapsed .ruler
+{
+	display: none !important;
+}
+
+.syntaxhighlighter .lines.no-wrap
+{
+	overflow: auto;
+	overflow-y: hidden;
+}
+
+/* Styles for the toolbar */
+
+.syntaxhighlighter .toolbar
+{
+	position: absolute !important;
+	right: 0px !important;
+	top: 0px !important;
+	font-size: 1px !important;
+	padding: 8px 8px 8px 0 !important; /* in px because images don't scale with ems */
+}
+
+.syntaxhighlighter.collapsed .toolbar
+{
+	font-size: 80% !important;
+	padding: .2em 0 .5em .5em !important;
+	position: static !important;
+}
+
+.syntaxhighlighter .toolbar a.item,
+.syntaxhighlighter .toolbar .item
+{
+	display: block !important;
+	float: left !important;
+	margin-left: 8px !important;
+	background-repeat: no-repeat !important;
+	overflow: hidden !important;
+	text-indent: -5000px !important;
+}
+
+.syntaxhighlighter.collapsed .toolbar .item
+{
+	display: none !important;
+}
+
+.syntaxhighlighter.collapsed .toolbar .item.expandSource
+{
+	background-image: url(magnifier.png) !important;
+	display: inline !important;
+	text-indent: 0 !important;
+	width: auto !important;
+	float: none !important;
+	height: 16px !important;
+	padding-left: 20px !important;
+}
+
+.syntaxhighlighter .toolbar .item.viewSource
+{
+	background-image: url(page_white_code.png) !important;
+}
+
+.syntaxhighlighter .toolbar .item.printSource
+{
+	background-image: url(printer.png) !important;
+}
+
+.syntaxhighlighter .toolbar .item.copyToClipboard
+{
+	text-indent: 0 !important;
+	background: none !important;
+	overflow: visible !important;
+}
+
+.syntaxhighlighter .toolbar .item.about
+{
+	background-image: url(help.png) !important;
+}
+
+/** 
+ * Print view.
+ * Colors are based on the default theme without background.
+ */
+
+.syntaxhighlighter.printing,
+.syntaxhighlighter.printing .line.alt1 .content,
+.syntaxhighlighter.printing .line.alt2 .content,
+.syntaxhighlighter.printing .line.highlighted .number,
+.syntaxhighlighter.printing .line.highlighted.alt1 .content,
+.syntaxhighlighter.printing .line.highlighted.alt2 .content,
+.syntaxhighlighter.printing .line .content .block
+{
+	background: none !important;
+}
+
+.syntaxhighlighter .no-wrap .line .content .block
+{
+	white-space: nowrap !important;
+}
+
+/* Gutter line numbers */
+.syntaxhighlighter.printing .line .number
+{
+	color: #bbb !important;
+}
+
+/* Add border to the lines */
+.syntaxhighlighter.printing .line .content
+{
+	color: #000 !important;
+}
+
+/* Toolbar when visible */
+.syntaxhighlighter.printing .toolbar,
+.syntaxhighlighter.printing .ruler
+{
+	display: none !important;
+}
+
+.syntaxhighlighter.printing a
+{
+	text-decoration: none !important;
+}
+
+.syntaxhighlighter.printing .plain,
+.syntaxhighlighter.printing .plain a
+{ 
+	color: #000 !important;
+}
+
+.syntaxhighlighter.printing .comments,
+.syntaxhighlighter.printing .comments a
+{ 
+	color: #008200 !important;
+}
+
+.syntaxhighlighter.printing .string,
+.syntaxhighlighter.printing .string a
+{
+	color: blue !important; 
+}
+
+.syntaxhighlighter.printing .keyword
+{ 
+	color: #069 !important; 
+	font-weight: bold !important; 
+}
+
+.syntaxhighlighter.printing .preprocessor 
+{ 
+	color: gray !important; 
+}
+
+.syntaxhighlighter.printing .variable 
+{ 
+	color: #a70 !important; 
+}
+
+.syntaxhighlighter.printing .value
+{ 
+	color: #090 !important; 
+}
+
+.syntaxhighlighter.printing .functions
+{ 
+	color: #ff1493 !important; 
+}
+
+.syntaxhighlighter.printing .constants
+{ 
+	color: #0066CC !important; 
+}
+
+.syntaxhighlighter.printing .script
+{
+	font-weight: bold !important;
+}
+
+.syntaxhighlighter.printing .color1,
+.syntaxhighlighter.printing .color1 a
+{ 
+	color: #808080 !important; 
+}
+
+.syntaxhighlighter.printing .color2,
+.syntaxhighlighter.printing .color2 a
+{ 
+	color: #ff1493 !important; 
+}
+
+.syntaxhighlighter.printing .color3,
+.syntaxhighlighter.printing .color3 a
+{ 
+	color: red !important; 
+}
+
+
+/**
+ * SyntaxHighlighter
+ * http://alexgorbatchev.com/
+ *
+ * SyntaxHighlighter is donationware. If you are using it, please donate.
+ * http://alexgorbatchev.com/wiki/SyntaxHighlighter:Donate
+ *
+ * @version
+ * 2.0.320 (May 03 2009)
+ * 
+ * @copyright
+ * Copyright (C) 2004-2009 Alex Gorbatchev.
+ *
+ * @license
+ * This file is part of SyntaxHighlighter.
+ * 
+ * SyntaxHighlighter is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * SyntaxHighlighter is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with SyntaxHighlighter.  If not, see <http://www.gnu.org/copyleft/lesser.html>.
+ */
+/**
+ * Midnight SyntaxHighlighter theme based on theme by J.D. Myers
+ * http://webdesign.lsnjd.com/
+ */
+
+/************************************
+ * Interface elements.
+ ************************************/
+
+.syntaxhighlighter
+{
+	background-color: #0F192A !important;
+}
+
+/* Gutter line numbers */
+.syntaxhighlighter .line .number
+{
+	color: #38566F !important;
+}
+
+/* Add border to the lines */
+.syntaxhighlighter .line .content
+{
+	border-left: 3px solid #435A5F !important;
+	color: #B9BDB6 !important;
+}
+
+.syntaxhighlighter.printing .line .content 
+{
+	border: 0 !important;
+}
+
+/* First line */
+.syntaxhighlighter .line.alt1 .content
+{
+	background-color: #0F192A !important;
+}
+
+/* Second line */
+.syntaxhighlighter .line.alt2 .content
+{
+	background-color: #0F192A !important;
+}
+
+.syntaxhighlighter .line .content .block
+{
+	background: url(wrapping.png) 0 1.1em no-repeat !important;
+}
+
+/* Highlighed line number */
+.syntaxhighlighter .line.highlighted .number
+{
+	background-color: #253E5A !important;
+	color: #fff !important;
+}
+
+/* Highlighed line */
+.syntaxhighlighter .line.highlighted.alt1 .content,
+.syntaxhighlighter .line.highlighted.alt2 .content
+{
+	background-color: #253E5A !important;
+}
+
+.syntaxhighlighter .ruler
+{
+	color: #38566F !important;
+	background-color: #0F192A !important;
+	border-left: 3px solid #435A5F !important;
+}
+
+.syntaxhighlighter.nogutter .ruler
+{
+	border: 0 !important;
+}
+
+.syntaxhighlighter .toolbar
+{
+	background-color: #0F192A !important;
+}
+
+.syntaxhighlighter .toolbar a
+{
+	color: #38566F !important;
+}
+
+.syntaxhighlighter .toolbar a:hover
+{
+	color: #8AA6C1 !important;
+}
+
+/************************************
+ * Actual syntax highlighter colors.
+ ************************************/
+.syntaxhighlighter .plain,
+.syntaxhighlighter .plain a
+{ 
+	color: #D1EDFF !important;
+}
+
+.syntaxhighlighter .comments,
+.syntaxhighlighter .comments a
+{ 
+	color: #428BDD !important;
+}
+
+.syntaxhighlighter .string,
+.syntaxhighlighter .string a
+{
+	color: #1DC116 !important; 
+}
+
+.syntaxhighlighter .keyword
+{ 
+	color: #B43D3D !important; 
+}
+
+.syntaxhighlighter .preprocessor 
+{ 
+	color: #8AA6C1 !important; 
+}
+
+.syntaxhighlighter .variable 
+{ 
+	color: #FFAA3E !important; 
+}
+
+.syntaxhighlighter .value
+{ 
+	color: #F7E741 !important; 
+}
+
+.syntaxhighlighter .functions
+{ 
+	color: #FFAA3E !important; 
+}
+
+.syntaxhighlighter .constants
+{ 
+	color: #E0E8FF !important; 
+}
+
+.syntaxhighlighter .script
+{ 
+	background-color: #404040 !important;
+}
+
+.syntaxhighlighter .color1,
+.syntaxhighlighter .color1 a
+{ 
+	color: #F8BB00 !important; 
+}
+
+.syntaxhighlighter .color2,
+.syntaxhighlighter .color2 a
+{ 
+	color: #FFFFFF !important; 
+}
+
+.syntaxhighlighter .color3,
+.syntaxhighlighter .color3 a
+{ 
+	color: #FFAA3E !important; 
+}

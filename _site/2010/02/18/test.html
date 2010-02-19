@@ -4,7 +4,7 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title>
-			Using the GitHub API to Display your Repositories
+			Blocks & Procs in Ruby
 		</title>
 		<meta name="author" content="Philip Mcmahon" />
 		<meta name="description" content="Philip Mcmahon (snaggled) blog about ruby, objectiveC, rails and iphone programming"/>
@@ -41,11 +41,41 @@
 		</div>
 		<div id="page">
 			<div id="content" class="narrowcolumn">
-				<h1>Using the GitHub <span class="caps">API</span> to Display your Repositories</h1>
-<p class="meta">29 Dec 2008 &#8211; Draperstown, Northern Ireland</p>
-<p>I wanted to display a list of my repositories on my homepage. Spent a while fluffing about with the <a href="http://docs.jquery.com/Ajax/jQuery.getJSON">jQuery.getJSON</a> call, but in the end found it preferable to use the callback parameter combined with <a href="http://docs.jquery.com/Ajax/jQuery.getScript">jQuery.getScript</a>.</p>
-<p>Heres the code, which will populate a div with the id &#8216;repos&#8217;:</p>
-<script src='http://pastie.org/349089.js'></script>
+				<h2><a href="/2010/02/18/test.html">Blocks &amp; Procs in Ruby</a></h2>
+<p>14 May 2009 &#8211; Denver, CO</p>
+<div id="post-1" class="post">
+<div class="entry">
+<p>So, in addition to a minor re-org (took the last post of the front page and decided to just show a list of posts), I continued reading <a href="http://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Method_Calls">this</a> awesome article. Here&#8217;s the distilled version.</p>
+<h3><strong>Procs</strong></h3>
+<p>A Proc, at its simplest, is a block of code that has been bound to a local variable, also known in various forms (some of these more accurate than other) as &#8220;function objects&#8221;, &#8220;functors&#8221; and &#8220;closures&#8221;. They act like any other &#8220;first-class&#8221; objects, can be passed around, stored in data-structures.</p>
+<pre class='brush:cpp,gutter:false'> 
+	#import "XYPoint.h"
+	#import &lt;Foundation/Foundation.h&gt;
+	#import &lt;Foundation/NSString.h&gt;
+
+	@implementation XYPoint
+
+	@synthesize x, y;
+
+	-(void) setX: (int) myX andY: (int) myY
+	{
+		x = myX;
+		y = myY;
+	}
+
+	-(NSString *) coords
+	{
+		//NSMutableString *s;
+		//[NSMutableString stringWithString: x];
+		//NSString *s = [[NSNumber numberWithInt: x] stringValue];
+		[s appendString: @", "];
+		NSLog(@"coords: %@", s);
+		return s;
+	}
+
+	@end
+</pre>
+<p></div></div></p>
 
 			</div>
 			<div id="sidebar">
@@ -90,6 +120,11 @@
 							
 							
 							<li class="page_item">
+								<a href="/2010/02/18/test.html">Blocks & Procs in Ruby</a>
+							</li>
+							
+							
+							<li class="page_item">
 								<a href="/2010/02/18/new-layout-and-style.html">New Layout & Style</a>
 							</li>
 							
@@ -106,11 +141,6 @@
 							
 							<li class="page_item">
 								<a href="/2009/03/16/temp-files-in-mongrel.html">Too Many Open Files in Rails - Temp Files in Mongrel</a>
-							</li>
-							
-							
-							<li class="page_item">
-								<a href="/2009/01/28/singletons_classes_or_eigenclasses.html">Singleton classes or Eigenclasses</a>
 							</li>
 							
 							

@@ -1,0 +1,16 @@
+---
+layout: post
+title: New Layout & Style
+---
+
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
+
+18 Feb 2010 - Denver, CO
+
+<div id="post-1" class="post">
+<div class="entry">
+First post of the new year, and a shiny new look to boot. Been spending my early morning (thank you Dunkin Donuts coffee) reading this:
+<br/><img src="http://www.informit.com/ShowCover.aspx?isbn=0321566157"/>
+<br/>First reviews and notes to hopefully start this weekend.
+</div>
+</div>

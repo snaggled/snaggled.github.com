@@ -3,17 +3,46 @@ layout: post
 title: Singleton classes or Eigenclasses
 ---
 
-h1. {{ page.title }}
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
 
-p(meta). 28 Jan 2009 - Miami, FL
+28 Jan 2009 - Las Vegas, NV
+
+<div id="post-1" class="post">
+<div class="entry">
 
 Vegas for the week at a conference. In the Java world, 'Singleton' (at least to me) usually referred to the design pattern which allowed you to ensure that there would always only be a maximum of one object instance of a particular class. It was usually implemented by making the constructor private and providing an access method that returned a single (usually static) instance of an singular object. It might looked something like this:
 
-<script src='http://pastie.org/373956.js'></script>
+<pre class='brush:java,gutter:false'> 
+
+public class SingletonExample {
+
+	/**
+	 * Private class variable
+	 */
+	private static SingletonExample singleton;
+	
+	/**
+	 * This is the only method available to access the class variable.
+	 * @return the singleton instance
+	 */
+	public static SingletonExample onlyInstance() {
+		if (singleton == null)
+			singleton = new SingletonExample();
+		return singleton;
+	}
+	
+	/**
+	 * The Ctr should be private
+	 */
+	private SingletonExample() {
+	}
+}
+
+</pre>
 	 
 Things appear to be slightly different in the Ruby world. A <i>singleton</i> or <i>eigenclass</i> in the Ruby world refers to a particular instance of an object, and ruby allows us to override the methods and behaviors of a particular object (note - not class).
 
-<pre>
+<pre class='brush:ruby,gutter:false'> 
 	?> class A
 	>> end
 	=> nil
@@ -35,3 +64,4 @@ Things appear to be slightly different in the Ruby world. A <i>singleton</i> or 
 </pre>
 
 For more checkout: "whytheluckystiff":http://whytheluckystiff.net/articles/seeingMetaclassesClearly.html.
+</div></div>

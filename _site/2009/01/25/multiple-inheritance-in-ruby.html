@@ -1,45 +1,53 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
-<head>
-   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-   <title>Multiple Inheritance in Ruby</title>
-   <meta name="author" content="Philip Mcmahon" />
-   <link href="http://snaggled.github.com" rel="alternate" title="Philip Mcmahon" type="application/atom+xml" />
-   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
-   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
-   <!--<script src="http://code.jquery.com/jquery-latest.js"></script>-->
-	<script src= "http://ajax.googleapis.com/ajax/libs/jquery/1.2/jquery.min.js"></script>
-	  <script>
-      	function parseRepo(data){
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>
+			Multiple Inheritance in Ruby
+		</title>
+		<meta name="author" content="Philip Mcmahon" />
+		<meta name="description" content="Philip Mcmahon (snaggled) blog about ruby, objectiveC, rails and iphone programming"/>
+		<meta name="keywords" content="ruby,rails,iphone,objc,objectivec,github"/>
+		<link href="http://snaggled.github.com" rel="alternate" title="Philip Mcmahon" type="application/atom+xml" />
+		<link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+		<link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+		<script src="/js/jquery-1.2.js" type="text/javascript"></script>
+		<script src="/js/syntax.js" type="text/javascript"></script>
+		<script type="text/javascript">
+		//<![CDATA[
+		function parseRepo(data){
 			var ul = $("<ul>").attr("class", "posts");
-	      	$.each(data.user.repositories, function(i, repo) {
+			$.each(data.user.repositories, function(i, repo) {
 				var a = $("<a>").attr("href", repo.url).text(repo.name);
-				var li = $("<li>").text(" - " + repo.description);
+				var li = $("<li>");//.text(" - " + repo.description);
 				a.prependTo(li);
+				
 				li.appendTo(ul);
-	          });
+			  });
+				
 			console.info("appending " + ul + " to repos");
 			$(ul).appendTo("#repos");
-    	}
-	  	$.getScript("http://github.com/api/v1/json/snaggled?callback=parseRepo");
-	  </script>
-</head>
-<body>
-
-<div class="site">
-  <div class="title">
-    <a href="/">Philip Mcmahon</a>
-    <a class="extra" href="http://github.com/snaggled">GitHub Home</a>
-  </div>
-  
-  <div id="post">
-<h1>Multiple Inheritance in Ruby</h1>
-<p class="meta">16 Jan 2009 &#8211; Miami, FL</p>
+		}
+		$.getScript("http://github.com/api/v1/json/snaggled?callback=parseRepo");
+		//]]>
+		</script>
+	</head>
+	<body>
+		<div id="header">
+			<div id="h99">
+				<a href="/">Philip Mcmahon</a> &gt;&gt;&gt; Vir prudens contra ventum non mingit
+			</div>
+		</div>
+		<div id="page">
+			<div id="content" class="narrowcolumn">
+				<h2><a href="/2009/01/25/multiple-inheritance-in-ruby.html">Multiple Inheritance in Ruby</a></h2>
+<p>16 Jan 2009 &#8211; Miami, FL</p>
+<div id="post-1" class="post">
+<div class="entry">
 <p>I&#8217;m in Miami for a couple of days on business and spent the plane journey reading up on Ruby <i>Mixins</i> and how it gets around the multiple inheritance problem.</p>
 <p>Coming from a Java background, where there was no multiple inheritance (<i>technically</i> there isn&#8217;t any in Ruby either), the solution to this one was pretty interesting to me. Ruby uses the concept of a <i>Mixin</i> which is really just a module. A module can&#8217;t be instantiated and is just a set of functionality.</p>
-<pre>
+<pre class='brush:java,gutter:false'> 
 	?&gt; module Mixin
 	&gt;&gt; def mixin_method
 	&gt;&gt; "Mixin method"
@@ -57,7 +65,7 @@
 	=&gt; "Mixin method"
 </pre>
 <p>Where it gets interesting (and the reason Java never supported multiple inheritance) is what to do if we have conflicting methods in our superclasses (<i>&#8220;Diamond Problem&#8221;</i> anyone ?). Technically, Ruby does not support multiple inheritance, but you can mixin multiple modules into other classes or modules. How does Ruby deal with the diamond problem ? Well it basically uses the last method to be included. You can see below, that the returned method is based on the last one to be introduced to the lookup chain.</p>
-<pre>
+<pre class='brush:java,gutter:false'> 
 	?&gt; module MixinA
 	&gt;&gt; def hello
 	&gt;&gt; "hello from A"
@@ -95,7 +103,7 @@
 	=&gt; "hello from A"
 </pre>
 <p>And thats it. You can also include a module in another module, just like normal inheritance. Module is actually a super-class of Class, but classes cannot be mixed-in to other classes, only Modules can.</p>
-<pre>
+<pre class='brush:java,gutter:false'> 
 	&gt;&gt; module MixinA
 	&gt;&gt; def hello
 	&gt;&gt; "hello"
@@ -124,41 +132,124 @@
 	=&gt; "hello2"
 </pre>
 <p>For a more complete introduction, of course you can simply <i>`ri Module`</i>.</p>
-</div>
-  
-  <div class="footer">
-    <div class="contact">
-      <p>
-        Philip Mcmahon<br />
-        philip@packetnode.com<br/>
-		credits: <a href="http://github.com/mojombo">mojombo</a><br/>
-      </p>
-    </div>
-    <div class="contact">
-      <p>
-        <a href="http://github.com/snaggled/">github.com/snaggled</a><br />
-        <a href="http://twitter.com/snaggled/">twitter.com/snaggled</a><br />
-        <a href="http://rubyforge.org/users/snaggled/">rubyforge.org/users/snaggled/</a><br />
-      </p>
-    </div>
-    <div class="rss">
-      <a href="http://feeds.feedburner.com/snaggled">
-        <img src="/images/rss.png" alt="Subscribe to RSS Feed" />
-      </a>
-    </div>
-  </div>
-</div>	
+<p></div></div></p>
 
-<a href="http://github.com/snaggled"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+			</div>
+			<div id="sidebar">
+				<ul>
+					<li id="twit" class="widget">
+						<div class="textwidget">
+							<a href="http://twitter.com/snaggled">
+							<div id="twit"></div></a>
+						</div>
+					</li>
+					<li id="pages" class="widget">
+						<h2 class="widgettitle">
+							Pages
+						</h2>
+					</li>
+					<li>
+						<ul>
+							<li class="page_item">
+								<a href="http://github.com/snaggled/">github</a>
+							</li>
+							<li class="page_item">
+								<a href="http://twitter.com/snaggled/">twitter</a>
+							</li>
+							<li class="page_item">
+								<a href="http://rubyforge.org/users/snaggled/">rubyforge</a>
+							</li>
+							<li class="page_item">
+								<a href="http://feeds.feedburner.com/snaggled">feedburner</a>
+							</li>
+							<li class="page_item">
+								<a href="mailto:philip@packetnode.com">mail</a>
+							</li>
+						</ul>
+					</li>
+					<li id="posts" class="widget">
+						<h2 class="widgettitle">
+							Recent Posts
+						</h2>
+					</li>
+					<li>
+						<ul>
+							
+							
+							<li class="page_item">
+								<a href="/2010/02/18/new-layout-and-style.html">New Layout & Style</a>
+							</li>
+							
+							
+							<li class="page_item">
+								<a href="/2009/05/14/blocks-and-procs-in-ruby.html">Blocks & Procs in Ruby</a>
+							</li>
+							
+							
+							<li class="page_item">
+								<a href="/2009/04/29/method-params-in-ruby.html">Method Params in Ruby</a>
+							</li>
+							
+							
+							<li class="page_item">
+								<a href="/2009/03/16/temp-files-in-mongrel.html">Too Many Open Files in Rails - Temp Files in Mongrel</a>
+							</li>
+							
+							
+							<li class="page_item">
+								<a href="/2009/01/28/singletons_classes_or_eigenclasses.html">Singleton classes or Eigenclasses</a>
+							</li>
+							
+							
+						</ul>
+					</li>
+					<li id="github" class="widget">
+						<h2 class="widgettitle">
+							Github Repos
+						</h2>
+					</li>
+					<li style="list-style: none">
+						<div id="repos"></div>
+					</li>
+					<li id="project" class="widget">
+						<h2 class="widgettitle">
+							Projects
+						</h2>
+					</li>
+					<li>
+						<ul>
+							<li class="page_item">
+								<a href="http://geosack.com">geosack</a>
+							</li>
+							<li class="page_item">
+								<a href="http://packetnode.com">packetnode</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		<div id="footer">
+			<p>
+				snaggled.github.com proudly powered by <a href="http://github.com/mojombo/jekyll">jekyll</a> 
+				& hosted by <a href="http://github.com">github</a>.
+				<br/>Javascript by the awesome <a href="http://jquery.com/">jQuery</a> with syntax highlighting by <a href="http://alexgorbatchev.com/">SyntaxHighlighter</a>.
+				<br/>The CSS is a modified wordpress theme originally from <a href="http://www.ahsanulhaque.com/">here</a> and <a href="http://www.genaehr.com/minimalism/">here</a>.
 
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-1855850-4");
-pageTracker._trackPageview();
-} catch(err) {}</script>
-</body>
+			</p>
+		</div>
+		</div>
+		<script type="text/javascript">
+		//<![CDATA[
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		//]]>
+		</script><script type="text/javascript">
+		//<![CDATA[
+		try {
+		var pageTracker = _gat._getTracker("UA-1855850-4");
+		pageTracker._trackPageview();
+		} catch(err) {}
+		//]]>
+		</script>
+	</body>
 </html>

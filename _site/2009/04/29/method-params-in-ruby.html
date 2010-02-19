@@ -4,7 +4,7 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title>
-			Using the GitHub API to Display your Repositories
+			Method Params in Ruby
 		</title>
 		<meta name="author" content="Philip Mcmahon" />
 		<meta name="description" content="Philip Mcmahon (snaggled) blog about ruby, objectiveC, rails and iphone programming"/>
@@ -41,11 +41,56 @@
 		</div>
 		<div id="page">
 			<div id="content" class="narrowcolumn">
-				<h1>Using the GitHub <span class="caps">API</span> to Display your Repositories</h1>
-<p class="meta">29 Dec 2008 &#8211; Draperstown, Northern Ireland</p>
-<p>I wanted to display a list of my repositories on my homepage. Spent a while fluffing about with the <a href="http://docs.jquery.com/Ajax/jQuery.getJSON">jQuery.getJSON</a> call, but in the end found it preferable to use the callback parameter combined with <a href="http://docs.jquery.com/Ajax/jQuery.getScript">jQuery.getScript</a>.</p>
-<p>Heres the code, which will populate a div with the id &#8216;repos&#8217;:</p>
-<script src='http://pastie.org/349089.js'></script>
+				<h2><a href="/2009/04/29/method-params-in-ruby.html">Method Params in Ruby</a></h2>
+<p>29 Apr 2009 &#8211; Denver, CO</p>
+<div id="post-1" class="post">
+<div class="entry">
+<p>Couple of things: firstly, I was a little fed-up trying to keep the format of code when I pasted it into this blog, and <a href="http://gist.github.com/104176">Gist</a> and <a href="http://pastie.org/">Pastie</a> felt like overkill (although I do like those services, especially <a href="http://pastie.org/">Pastie</a>). From my github <span class="caps">RSS</span> feed there seemed to be a lot of activity on <a href="http://github.com/mojombo/jekyll/tree/master">Jekyll</a> so I was browsing the <span class="caps">README</span> and chanced upon the fact that it supports <a href="http://pygments.org/">Pygment</a> which was just what I needed. One quick python <a href="http://peak.telecommunity.com/DevCenter/EasyInstall">easy_install</a> and I was up and running. Sweet!</p>
+<p>So, I spent some time this evening looking at methods &amp; params in Ruby (actually: <a href="http://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Method_Calls">here</a>). Heres the short and sweet:</p>
+<h3>Hashes</h3>
+<p>Passing a Hash to a method will result in those parameters being rolled up into a single Hash Variable.</p>
+<pre class='brush:ruby,gutter:false'> 
+&gt;&gt; def accept(var)
+&gt;&gt; var.inspect
+&gt;&gt; end
+=&gt; nil
+&gt;&gt; accept('a')
+=&gt; "\"a\""
+&gt;&gt; accept('a' =&gt; 1)
+=&gt; "{\"a\"=&gt;1}"
+&gt;&gt; accept('a'=&gt;1,'b'=&gt;2)
+=&gt; "{\"a\"=&gt;1, \"b\"=&gt;2}"
+</pre>
+<h3>Asterisk</h3>
+<p>An asterisk (the &#8216;splat&#8217; operator) can be used on last parameter of a method to pass additional params. Additional params are collected into an array in the last parameter.</p>
+<pre class='brush:ruby,gutter:false'> 
+&gt;&gt; def accept2(a, b, *c)
+&gt;&gt; c.inspect
+&gt;&gt; end
+=&gt; nil
+&gt;&gt; accept2(1, 2, 3, 4, 5)
+=&gt; "[3, 4, 5]"
+</pre>
+<p>And the reverse is true, an array parameter can be prefixed by asterisk to be expanded as its passed to the method.</p>
+<pre class='brush:ruby,gutter:false'> 
+&gt;&gt; a = [1, 2, 3]
+=&gt; [1, 2, 3]
+&gt;&gt; accept2(*a)
+=&gt; "[3]"
+</pre>
+<h3>Ampersand</h3>
+<p>Much like asterisk, except you are telling the method that a code block will be passed in. A proc object will be created and assigned to the param name.</p>
+<pre class='brush:ruby,gutter:false'> 
+&gt;&gt; def accept3(&amp;code)
+&gt;&gt; code.call
+&gt;&gt; end
+=&gt; nil
+&gt;&gt; accept3 {puts "philly"}
+philly
+=&gt; nil
+</pre>
+</div>
+</div>
 
 			</div>
 			<div id="sidebar">
