@@ -45,8 +45,8 @@ Variable, meet pointer, who is nothing more than a memory address with your addr
 Gives us:
 
 <pre class='brush:bash,gutter:false'>
-07:07:26.919 Pointers[1958:903] count = 1, ptr = 1
-07:07:26.922 Pointers[1958:903] count = 2, ptr = 2
+07:07:26.919 Pointers[1958:903] c = 1, ptr = 1
+07:07:26.922 Pointers[1958:903] c = 2, ptr = 2
 07:07:26.923 Pointers[1958:903] ptr == 1606414028
 </pre>
 
