@@ -27,15 +27,15 @@ Variable, meet pointer, who is nothing more than a memory address with your addr
 
 		// ptr is equal to the address of count
 		ptr = &count;
-		NSLog(@"count = %i, ptr = %i", count, *ptr);
+		NSLog(@"c = %i, p = %i", count, *ptr);
 
 		// contents of ptr is equal to the contents of count
 		count = 2;
 		*ptr = count;
-		NSLog(@"count = %i, ptr = %i", count, *ptr);
+		NSLog(@"c = %i, p = %i", count, *ptr);
 
 		// ptr is actually a memory address
-		NSLog(@"ptr == %i", ptr);
+		NSLog(@"p == %i", ptr);
 
 	    [pool drain];
 	    return 0;
@@ -45,9 +45,9 @@ Variable, meet pointer, who is nothing more than a memory address with your addr
 Gives us:
 
 <pre class='brush:bash,gutter:false'>
-07:07:26.919 Pointers[1958:903] c = 1, ptr = 1
-07:07:26.922 Pointers[1958:903] c = 2, ptr = 2
-07:07:26.923 Pointers[1958:903] ptr == 1606414028
+07:07:26.919 Pointers[1958:903] c = 1, p = 1
+07:07:26.922 Pointers[1958:903] c = 2, p = 2
+07:07:26.923 Pointers[1958:903] p == 1606414028
 </pre>
 
 h4. Structs
