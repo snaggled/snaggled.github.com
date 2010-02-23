@@ -28,7 +28,6 @@
 				li.appendTo(ul);
 			  });
 				
-			//console.info("appending " + ul + " to repos");
 			$(ul).appendTo("#repos");
 		}
 		$.getScript("http://github.com/api/v1/json/snaggled?callback=parseRepo");
