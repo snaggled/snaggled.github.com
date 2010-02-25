@@ -1,0 +1,113 @@
+---
+layout: post
+title: Sinatra + Hpricot + jQuery == Dukkha
+---
+
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
+
+24 Feb 2010 - Denver, CO
+
+<div id="post-1" class="post">
+<div class="entry">
+
+I realized over the weekend that I needed some form of 'startpage'. I have a bunch of access-points, switches, servers and applications, each with its own access url, and I wanted a simple, configurable page, with a link to each server/app, that I could set my homepage to. I quick google led me to this site: "symbaloo":http://www.symbaloo.com. I loved the cool grid-layout but wasn't interested in relying upon an external site, so I decided to spend Sunday afternoon knocking something similar up. 
+
+Besides, I have been dying to play with the awesome "Sinatra":http://www.sinatrarb.com, which looked perfect. Coupled with "hpricot":http://wiki.github.com/hpricot/hpricot/ for XML parsing, and "jQuery":http://jquery.com/ for all-round awesomeness, we have everything we need to build something like this in a couple hours. 
+
+h3. Configuration
+
+Lets start by defining the configurable variables of a 'cell' (one of the table elements), it looks a little like this:
+
+<pre class='brush:html,gutter:false'> 
+	<cell>
+		<coords><x>5</x><y>1</y></coords>
+		<image>router.gif</image>
+		<text>dsl router</text>
+		<color>#ffffff</color>
+		<background>blue.gif</background>    
+		<url>http://192.168.1.1</url>
+	</cell>
+</pre> 
+
+Which should give us everything we need. 
+
+h3. Hpricot
+
+Life couldn't be any easier when we're parsing XML in ruby, so I took the liberty of firstly creating a Cell class to hold what we need:
+    
+
+<pre class='brush:ruby,gutter:false'> 
+	class Cell
+	  @@attrs = [:x, :y, :image, :text, :color, :background, :url, :tooltip]
+	  @@attrs.each {|a| attr_accessor a }
+
+	  def initialize(cell)
+	    @@attrs.each do |a|
+	      self.send("#{a}=", (cell/a).inner_html)
+	    end    
+	    [:x, :y].each {|a| self.send("#{a}=", self.send(a).to_i)}
+	  end
+	end
+</pre>
+
+Along with a quick XML parsing routine: 
+
+<pre class='brush:ruby,gutter:false'>     
+	def load_config(xml_config="#{File.dirname(__FILE__)}/config.xml")
+	  config = File.read(xml_config)
+	  doc = Hpricot.parse(config)
+
+	  # cells = multi-d array using width & height
+	  width = (doc/:cells/:width).inner_html.to_i
+	  height = (doc/:cells/:height).inner_html.to_i
+	  cells = Array.new(height)
+	  height.times { |h| cells[h] = Array.new(width) }
+
+	  (doc/:cells/:cell).each do |cell_html|
+	    cell = Cell.new(cell_html)
+	    cells[cell.y][cell.x] = cell
+	  end
+	  cells  
+	end
+</pre>     
+
+And we have our table config'd and loaded.          
+
+h3. Sinatra
+
+Next up, is the fantastic "Sinatra":http://www.sinatrarb.com. By no stretch of the imagination did I make use of its best features here, in fact all I'm really doing is using it as a glorified web-server, but the project did give me an opportunity to play around with some of its cooler features and I have a project in mind already for next weekend.                         
+
+All we're really going to do here is load the XML into our multi-dimensional array and delegate the display to the view (as it should be):
+
+<pre class='brush:ruby,gutter:false'>     
+get '/' do
+  @cells = load_config
+  erb :index
+end     
+</pre>     
+ 
+Finally, all of the Javascript resides in the "view":http://github.com/snaggled/dukkha/blob/master/views/index.erb, which I won't replicate here, but lets just say that jQuery makes life easier than it should be and I'd recommend it to anybody. I used "Prototype":http://www.prototypejs.org/ pretty extensively for a while (because it shipped with Rails), but over the last year or so, "jQuery":http://jquery.com/ has become my Javascript framework of choice.  
+
+h3. The Result 
+
+And thats about it, 1 XML file, 1 Ruby file and 1 View and 1 CSS file later, we end up with something that looks like this:  
+
+<a href="/images/dukkha.jpg" class="lightbox"><img src="/images/dukkha.jpg"/></a>     
+<script type="text/javascript">
+$(function() {
+	$('a.lightbox').lightBox(); 
+});
+</script>
+
+You will notice I've replicated the "symbaloo":http://www.symbaloo.com layout and used some of their icons. Credit where credit's due, their site looks great and I encourage you to head over there and check it out.
+
+h3. A name, and Internet Explorer 
+
+Which leaves us with a name to choose. I settled upon "Dukkha":http://en.wikipedia.org/wiki/Dukkha because I am reading about Buddhism and was extremely impressed to find it defined the fundamental disquiet we experience as beings, trapped between the assumption of an eternal self (atman) and the denial of such a self (anatman).                                                                       
+
+Speaking of "having a poor axle hole,", thats pretty much how I felt when I discovered Internet Explorer didn't want to play nicely with my XHTML and CSS. Not to matter, as I don't have the time nor inclination to start fixing things so that IE will play nicely with it. If Microsoft browsers are your thing, I graciously invite you to fork off in github and make it look pretty.
+                                           
+The project is available on "github":http://github.com/snaggled/dukkha to fork and/or download. 
+ 
+</div>
+</div>
