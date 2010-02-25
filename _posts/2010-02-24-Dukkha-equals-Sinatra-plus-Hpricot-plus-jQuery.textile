@@ -53,7 +53,7 @@ Life couldn't be any easier when we're parsing XML in ruby, so I took the libert
 Along with a quick XML parsing routine: 
 
 <pre class='brush:ruby,gutter:false'>     
-	def load_config(xml_config="#{File.dirname(__FILE__)}/config.xml")
+	def load_config(xml_config)
 	  config = File.read(xml_config)
 	  doc = Hpricot.parse(config)
 
