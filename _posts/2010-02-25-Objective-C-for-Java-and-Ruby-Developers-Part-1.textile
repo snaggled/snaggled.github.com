@@ -12,7 +12,7 @@ h2. <a href="{{ page.url }}">{{ page.title }}</a>
 
 Brought to you this morning by my current favorite method of caffeination:
 
-<br/><img src="http://ecx.images-amazon.com/images/I/41EGcwVE2LL._SL500_AA280_.jpg" alt="Dunkin Donuts"/>
+<br/><img class="centered" src="http://ecx.images-amazon.com/images/I/41EGcwVE2LL._SL500_AA280_.jpg" alt="Dunkin Donuts"/>
  
 h3. Classes, Variables & Methods 
 
