@@ -1,0 +1,145 @@
+---
+layout: post
+title: Objective-C for Java (and Ruby) Developers - Part 1
+---
+
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
+
+25 Feb 2010 - Denver, CO
+
+<div id="post-1" class="post">
+<div class="entry">
+
+Brought to you this morning by my current favorite method of caffeination:
+
+<br/><img src="http://ecx.images-amazon.com/images/I/51bGR-y0rCL._SS500_.jpg" alt="Dunkin Donuts"/>
+ 
+h3. Classes, Variables & Methods 
+
+Classes are divided into 2 parts:
+
+<pre class='brush:cpp,gutter:false'> 
+	@interface // definitions go here
+	
+	...
+	
+	@implementation // goes here
+</pre>
+
+Methods are defined using the syntax:
+
+<pre class='brush:cpp,gutter:false'> 
+	-(void) add: (int) a and: (int) b;
+</pre>
+
+With the - at the start meaning an instance-level variable, and a + meaning a class level definition. Giving variables names in each method definition can feel a little strange. Heres a couple more examples:
+
+<pre class='brush:cpp,gutter:false'> 
+	-(void) setNumerator: (int) n overDenominator: (int) d;
+	-(void) addEntryWithName: (*NSString) name andEmail: (*NSString) email andPhone: (*NSString) phone;
+</pre>
+
+The names can also be ignored if you wish.
+
+<pre class='brush:cpp,gutter:false'> 
+	-(void) add: (int) a: (int) b;
+</pre>
+
+Methods are invoked via the syntax:
+
+<pre class='brush:cpp,gutter:false'> 
+	[receiver message];
+</pre>
+
+Variables can be accessed using the 'dot operator':
+
+<pre class='brush:cpp,gutter:false'> 
+	myInstance.myVar;
+</pre>
+
+And can be quickly defined using the @synthesize operator, which is somewhat equivalent to Rubys attr_accessible:
+
+<pre class='brush:cpp,gutter:false'> 
+	@synthesis myVar;
+</pre>
+
+To bring it all together:
+
+<pre class='brush:cpp,gutter:false'> 
+	#import <Foundation/Foundation.h>
+
+	@interface Fraction : NSObject 
+	{
+		@public
+			int public_variable;
+	}
+
+	@property int numerator, denominator;
+
+	-(void) setNumerator: (int) n andDenominator: (int) d;
+	-(void) setA: (int) a;
+
+	@end
+
+	@implementation Fraction
+
+	@synthesize numerator, denominator;
+
+	-(void) setNumerator: (int) n andDenominator: (int) d
+	{
+		numerator = n;
+		denominator = d;
+	}
+
+	-(void) setA: (int) a
+	{
+		public_variable = a;
+	}
+
+	@end
+
+
+	int main (int argc, const char * argv[]) {
+	    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+
+		Fraction *f = [[Fraction alloc] init];
+		[f setNumerator: 1 andDenominator: 2];
+		NSLog(@"numerator: %i, denominator: %i", [f numerator], [f denominator]);
+
+		[f setA: 3];
+		NSLog(@"via attribute accessor: %i", f->public_variable);
+
+	    [pool drain];
+	    return 0;
+	}
+</pre>
+
+h3. The 'id' Data Type and Static Typing 
+
+In Java if we didn't feel like being explicit about a type, we could always just define a super-class as the reference, for example:
+
+<pre class='brush:java,gutter:false'> 
+	public class Philly
+	{
+		public static void main(String[] args) throws InterruptedException
+		{
+			Object p = new Philly();
+			System.out.println(p.getClass());
+		}
+	}
+</pre>
+
+Of course gives us the output Philly.
+
+In Objective-C we get this weird little 'id data type' that can basically do the same thing. My, you are a weird little man, aren't you ?
+
+<pre class='brush:cpp,gutter:false'> 
+id g = [[Fraction alloc] init];
+NSLog(@"numerator: %i, denominator: %i", [g numerator], [g denominator]);
+</pre>
+
+Note that we didn't even have to declare g as a pointer there.
+
+Up next: Meta-data, Categories & Protocols.
+</div>
+</div>
