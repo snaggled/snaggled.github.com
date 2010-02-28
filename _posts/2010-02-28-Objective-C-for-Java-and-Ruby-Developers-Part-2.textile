@@ -1,0 +1,239 @@
+---
+layout: post
+title: Objective-C for Java (and Ruby) Developers - Part 2
+---
+
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
+
+28 Feb 2010 - Denver, CO
+
+<div id="post-1" class="post">
+<div class="entry">
+ 
+
+h3. Meta-data
+
+No discussion about a language would be complete without covering the ability to navigate around its meta and find information about its classes and methods.
+
+Lets start with Ruby, which, as is usually the case, everything is sweet:
+
+<pre class='brush:ruby,gutter:false'> 
+	class Philly < String
+	  def initialize
+	    @var = ""
+	  end
+	  def custom_method 
+	    "Philly"
+	  end
+	end
+
+	philly = Philly.new
+
+	p philly.class
+	p philly.methods
+	p philly.instance_variables
+	p philly.kind_of?(String)
+</pre>
+
+Takes a couple more lines of code in Java, but still life is good:
+
+<pre class='brush:java,gutter:false'> 
+	import java.util.*;
+	import java.lang.reflect.*;
+	import java.io.*;
+
+	public class Philly extends StringWriter
+	{		
+		public String var;
+		public void custom_method()
+		{
+		}
+
+		public static void main(String[] args) 
+			throws InterruptedException
+		{
+			Object p = new Philly();
+			Class c = p.getClass();
+			System.out.println(c.getName());
+
+			Method[] m = c.getMethods();
+			Iterator it = Arrays.asList(m).iterator();
+			while (it.hasNext())
+			{
+				System.out.println(it.next());
+			}
+
+			Field[] f = c.getFields();
+			it = Arrays.asList(f).iterator();
+			while (it.hasNext())
+			{
+				System.out.println(it.next());
+			}
+
+			System.out.println(StringWriter.class.
+				isAssignableFrom(c));
+		}
+	}
+</pre>
+
+Note that the "String":http://java.sun.com/j2se/1.6.0/docs/api/java/lang/String.html class is Final in Java so we couldn't over-ride it. I just over-rode StringWriter to get the message across, you get the general point.
+
+Which takes us finally to Objective-C, where things are longer still, but not too bad. Note that we do have to worry about freeing up any memory that was allocated in our calls.
+
+<pre class='brush:cpp,gutter:false'> 
+#import <Foundation/Foundation.h>
+#import <objc/runtime.h>
+
+@interface Philly : NSString
+{
+	int var;
+}
+
+-(void) custom_method;
+
+@end
+
+@implementation Philly
+
+-(void) custom_method 
+{
+}
+
+@end
+
+int main (int argc, const char * argv[]) 
+{
+    NSAutoreleasePool * pool = 
+		[[NSAutoreleasePool alloc] init];
+
+	Philly *p = [[Philly alloc] init];
+    
+	// the class
+	NSLog(@"%@", [p class]);
+
+	// methods
+	unsigned int count = 0;
+	Method *methods = class_copyMethodList(
+		[p class], &count);
+	for (int i = 0; i < count; i++)
+	{	
+		SEL selector = method_getName(methods[i]); 
+		NSLog(@"%s", selector);
+	}	
+	
+	// instance variables
+	Ivar *vars = class_copyIvarList(
+		[p class], &count);
+	for (int i = 0; i < count; i++)
+	{	
+		NSLog(@"%s", ivar_getName(vars[i]));
+	}
+	
+	// kindof/superclass
+	NSLog(@"%@", [[p class] isSubclassOfClass: 
+	 [NSString class]] ? @"true" : @"false");
+	
+	free(methods);
+	free(vars);
+	[p release];
+    [pool drain];
+    return 0;
+}
+</pre>
+
+Now this is a little interesting, because the interesting calls in this example (e.g. "class_copyMethodList":http://developer.apple.com/mac/library/documentation/Cocoa/Reference/ObjCRuntimeRef/Reference/reference.html#//apple_ref/c/func/class_copyMethodList) calls come from the Mac OS X implementation of the Objective-C runtime platform, so things may look differently for Linux or a GNU-compiler based platform. You can read more about it "here":http://developer.apple.com/mac/library/documentation/Cocoa/Reference/ObjCRuntimeRef/Reference/reference.html.
+
+h3. Categories
+
+Lets spend a second talking about the 'Fragile Base Class' problem in object orientated programming. This basically refers to the issue where (to quote wikipedia) "base classes (superclasses) are considered 'fragile' because seemingly safe modifications to a base class, when inherited by the derived classes, may cause the derived classes to malfunction". So in essence if I create a base class which is then sub-classed repeatedly (or perhaps even once), its difficult for me to make any changes to the base class because I have limited visibility into the effects that change will have to all of the sub-classes.
+
+Each language gets it own flavor of solution to deal with this. In Java (and generally in the OO world) we are told to program to interfaces, not to classes/implementations. We are also given the 'Final' keyword to lock super-classes down. In Ruby we get Mixins, as we as (arguably) the ability to 'Monkey-Patch'. In Objective-C, we get Categories.
+
+A Category is at its simplest, the ability to add methods (not variables) to an interface/implementation without necessarily subclassing. Its an extension to a class, and its possible to have multiple categories for the same class. An example:
+
+<pre class='brush:cpp,gutter:false'> 
+	@interface Philly : NSString
+	{
+		int var;
+	}
+
+	-(void) custom_method;
+
+	@end
+
+	@implementation Philly
+
+	-(void) custom_method 
+	{
+	}
+
+	@end
+
+	@interface Philly (MyCategory)
+
+	-(void) category_method;
+
+	@end
+
+	@implementation Philly (MyCategory)
+
+	-(void) category_method
+	{
+	}
+
+	@end
+
+	@interface Philly (SecondCategory)
+
+	-(void) second_category_method;
+
+	@end
+
+	@implementation Philly (SecondCategory)
+
+	-(void) second_category_method
+	{
+	}
+
+	@end
+</pre>
+
+This effectively allows us to add methods to a super-class, without having to modify the superclass directly. 
+
+h3. Protocols
+
+A protocol is, at its simplest, very similar to a Java Interface. It enables us to define a list of methods that have to be implemented. If a Class decides to 'conform' to that protocol, it must implement the listed methods. In short:
+
+<pre class='brush:cpp,gutter:false'> 
+@protocol MyProtocol
+
+-(void) protocol_method;
+
+@end
+
+@interface Philly <MyProtocol>
+{
+	int var;
+}
+
+-(void) custom_method;
+
+@end
+
+@implementation Philly
+
+-(void) custom_method 
+{
+}
+
+-(void) protocol_method
+{
+}
+
+@end
+</pre> 
+
+Early flight to Dallas tomorrow morning. Spending the week (hopefully) getting my Java on!
+
+</div>
+</div>
