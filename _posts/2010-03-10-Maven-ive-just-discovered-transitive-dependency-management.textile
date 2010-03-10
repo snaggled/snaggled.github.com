@@ -77,14 +77,12 @@ The bit we care about are the dependencies. Lets kick off a build:
 	[INFO] Building First Hibernate Tutorial
 	[INFO]    task-segment: [compile]
 	[INFO] ------------------------------------------------------------------------
-	Downloading: http://repo1.maven.org/maven2/org/apache/maven/plugins/maven-resources-plugin/2.3/maven-resources-plugin-2.3.pom
-	Downloading: http://repo1.maven.org/maven2/org/apache/maven/plugins/maven-plugins/12/maven-plugins-12.pom
-	Downloading: http://repo1.maven.org/maven2/org/apache/maven/maven-parent/9/maven-parent-9.pom
-	Downloading: http://repo1.maven.org/maven2/org/apache/apache/4/apache-4.pom
-	Downloading: http://repo1.maven.org/maven2/org/apache/maven/plugins/maven-resources-plugin/2.3/maven-resources-plugin-2.3.jar
-	Downloading: http://repo1.maven.org/maven2/org/apache/maven/plugins/maven-compiler-plugin/2.0.2/maven-compiler-plugin-2.0.2.pom
-	Downloading: http://repo1.maven.org/maven2/org/apache/maven/plugins/maven-plugins/8/maven-plugins-8.pom
-	Downloading: http://repo1.maven.org/maven2/org/apache/maven/maven-parent/5/maven-parent-5.pom</pre>
+	Downloading: .../maven-plugins-12.pom
+	Downloading: .../maven-parent-9.pom
+	Downloading: .../apache-4.pom
+	Downloading: .../maven-plugins-8.pom
+	Downloading: .../maven-parent-5.pom   
+	...
 </pre>
 
 And look at that bad boy go! Good lord, it actually fetched 40 jars, stored them locally in my repository, and used them in the build. Dependencies and everything. Glorious. I have to admit to being more impressed this evening with "maven":http://maven.apache.org than "hibernate":https://www.hibernate.org/ (which is actually fine, I'm just a little spoilt with "ActiveModel":http://github.com/rails/rails/tree/master/activemodel).
