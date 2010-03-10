@@ -1,0 +1,97 @@
+---
+layout: post
+title: Maven - I've just discovered Transitive Dependency Management
+---
+
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
+
+10 Mar 2010 - Denver, CO
+
+<div id="post-1" class="post">
+<div class="entry">
+ 
+
+h3. Maven
+
+Wow. I have to admit to being a little late to the party on this one. Several years ago, my days as a full-time Java developer where filled with "ant":http://ant.apache.org/ (if you were lucky) and "make":http://www.gnu.org/software/make/ (if you weren't). 
+
+Before I continue, this evenings late night festivities are brought to you by this (ultimate) form of nourishment:
+
+<br/><img class="centered" src="http://www.bestbritishfoods.com/cw2/assets/product_thumb/TayChsOninsm.jpg" alt="Tayto crisps"/>
+                                                                                                                     
+And this fantastic album:
+
+<br/><img class="centered" src="http://ecx.images-amazon.com/images/I/51mOm%2BZFnNL._SS500_.jpg" alt="Tangerine Dream - Ricochet"/>
+                                                                                                                                
+Anyhoo, this evening, I planned on spending a couple hours playing with "hibernate":https://www.hibernate.org/ (I wanted to check out its ORM capabilities, especially compared to Rails "ActiveModel":http://github.com/rails/rails/tree/master/activemodel (which I love)). 5 minutes into the tutorial and I was in jar-hell and for the millionth time starting thinking "where do I download that that mysql-connector-java" (its "here":http://dev.mysql.com/downloads/connector/j/ for those of you that care) as I started to think about hooking hibernate up-to mysql.  
+
+But not this time. Introducing "maven":http://maven.apache.org/. The best description of that I can think of is "ant":http://ant.apache.org/ coupled with something like "yum":http://yum.baseurl.org/ or "apt-get":http://en.wikipedia.org/wiki/Advanced_Packaging_Tool or "macports":http://www.macports.org/ or whatever. Its kind of like a "RubyGems":http://rubyforge.org/projects/rubygems/ for jar files.
+
+Here's a sample "POM":http://maven.apache.org/pom.html file, from the hibernate tutorial:
+
+<pre class='brush:xml,gutter:false'>      
+<modelVersion>4.0.0</modelVersion> 
+<groupId>org.hibernate.tutorials</groupId> 
+<artifactId>hibernate-tutorial</artifactId> 
+<version>1.0.0-SNAPSHOT</version> 
+<name>First Hibernate Tutorial</name>   
+<build> 
+	<finalName>${artifactId}</finalName>   
+</build> 
+<dependencies> 
+	<dependency> 
+		<groupId>org.hibernate</groupId> 
+		<artifactId>hibernate-core</artifactId>    
+		<version>3.3.2.GA</version>
+	</dependency> 
+	<dependency> 
+		<groupId>javax.servlet</groupId> 
+		<artifactId>servlet-api</artifactId> 
+		<version>2.5</version>
+	</dependency>         
+	<dependency> 
+		<groupId>mysql</groupId> 
+		<artifactId>mysql-connector-java</artifactId> 
+		<version>5.1.9</version>
+	</dependency>         
+	<dependency> 
+		<groupId>org.slf4j</groupId> 
+		<artifactId>slf4j-simple</artifactId> 
+		<version>1.5.11</version>
+	</dependency> 
+	<dependency> 
+		<groupId>javassist</groupId> 
+		<artifactId>javassist</artifactId> 
+		<version>3.8.0.GA</version>
+	</dependency> 
+</dependencies> 
+</project>
+</pre>
+
+The bit we care about are the dependencies. Lets kick off a build:
+
+<pre class='brush:text,gutter:false'> 
+	~/java/tutorial $ mvn compile
+	[INFO] Scanning for projects...
+	[INFO] ------------------------------------------------------------------------
+	[INFO] Building First Hibernate Tutorial
+	[INFO]    task-segment: [compile]
+	[INFO] ------------------------------------------------------------------------
+	Downloading: http://repo1.maven.org/maven2/org/apache/maven/plugins/maven-resources-plugin/2.3/maven-resources-plugin-2.3.pom
+	Downloading: http://repo1.maven.org/maven2/org/apache/maven/plugins/maven-plugins/12/maven-plugins-12.pom
+	Downloading: http://repo1.maven.org/maven2/org/apache/maven/maven-parent/9/maven-parent-9.pom
+	Downloading: http://repo1.maven.org/maven2/org/apache/apache/4/apache-4.pom
+	Downloading: http://repo1.maven.org/maven2/org/apache/maven/plugins/maven-resources-plugin/2.3/maven-resources-plugin-2.3.jar
+	Downloading: http://repo1.maven.org/maven2/org/apache/maven/plugins/maven-compiler-plugin/2.0.2/maven-compiler-plugin-2.0.2.pom
+	Downloading: http://repo1.maven.org/maven2/org/apache/maven/plugins/maven-plugins/8/maven-plugins-8.pom
+	Downloading: http://repo1.maven.org/maven2/org/apache/maven/maven-parent/5/maven-parent-5.pom</pre>
+</pre>
+
+And look at that bad boy go! Good lord, it actually fetched 40 jars, stored them locally in my repository, and used them in the build. Dependencies and everything. Glorious. I have to admit to being more impressed this evening with "maven":http://maven.apache.org than "hibernate":https://www.hibernate.org/ (which is actually fine, I'm just a little spoilt with "ActiveModel":http://github.com/rails/rails/tree/master/activemodel).
+
+The source for the "hibernate tutorial":http://docs.jboss.org/hibernate/core/3.3/reference/en/html/tutorial.html is "here":http://github.com/snaggled/hibernate_tutorial for safekeeping.     
+
+Tomorrow I need to burn 44 gigs of VMWare instances onto DVDs and post them to a data-center in Florida. Wonder how long it will take. I figure its easier than trying to FTP them.
+
+</div>
+</div>
