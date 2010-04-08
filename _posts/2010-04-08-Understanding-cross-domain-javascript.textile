@@ -1,0 +1,130 @@
+---
+layout: post
+title: Understanding Cross-Domain Javascript - JSONP and IFrames
+---
+
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
+
+08 Apr 2010 - Denver, CO
+
+<div id="post-1" class="post">
+<div class="entry">
+ 
+Been an awesome couple of weeks. I am the proud new father of twins (our second set). Still on a high from the whole experience. Think I'll celebrate by documenting some of the cross-domain issues I explored last weekend.
+
+But before I begin, the last couple of weeks have been dominated by this work of epic proportions:
+
+<br/><img class="centered" src="http://bleepfiend.co.uk/sitebuildercontent/sitebuilderpictures/analordset.JPG" alt="AFX - Analord"/>
+
+41 tracks of "Afx awesomeness":http://en.wikipedia.org/wiki/Analord. Thats not my vinyl in the picture above, I wish it was.
+
+h3. The Cross Domain Problem
+
+Its classic Philly to make the mistake of assuming things are actually easier than they are (I'm a perpetual optimist). So, when over the weekend I wanted to write a piece of Javascript to connect to a remote server, pull back some content and display it, I *of course* assumed that things boiled down to a quick jQuery call. Not to be. Lets make a sample ajax call using jQuery:
+
+<pre class='brush:javascript,gutter:false'> 
+$(document).ready(function(){
+	var url = "http://twitter.com/status/user_timeline/snaggled.json";
+	$.getJSON(url, function(data) {
+		// firebug
+		console.info(data);
+	});
+});
+</pre>
+
+Pretty straightforward stuff. What we'd like to see in our console window is some nicely formatted JSON, along the lines of:
+
+<pre class='brush:js,gutter:false'> 
+[{"created_at":"Tue Apr 06 19:29:57 +0000",
+"contributors":null,
+"in_reply_to_status_id":null,
+"in_reply_to_user_id":null,
+"geo":null,
+"place":null,
+"in_reply_to_screen_name":null,
+"source":"<a href=\"http://www.tweetdeck.com/\",
+...
+</pre>
+
+Of course I'd completely forgotten the ("same origin":http://en.wikipedia.org/wiki/Same_origin_policy) Cross Domain Security restrictions that apply when it comes to Javascript. In short:
+
+* We cannot make an AJAX ("XMLHttpRequest":http://en.wikipedia.org/wiki/XMLHttpRequest) to a different domain than the one which served the page we are currently accessing.
+
+This is the reason our AJAX call is failing above, in fact, in FireBugs console we see this:
+
+<pre class='brush:text,gutter:false'> 
+Access to restricted URI denied" code: "1012
+[Break on this error] xhr.open(type, s.url, s.async);
+</pre>
+
+Of course there are a "wealth":http://en.wikipedia.org/wiki/Cross-site_scripting of valid reasons for same origin policy, but it does nix our idea of dropping in a line or two of Javascript and pulling back some information. So what are our options ?
+
+h3. IFrames
+
+Its like the late 90s all over again. This doesn't feel like a particularly elegant solution. Nonetheless, it does work and deserves attention. 
+
+An "IFrame":http://en.wikipedia.org/wiki/HTML_element#Frames is an entire HTML document embedded in our page. We dynamically create one of these bad boys, setting its source to a url on our server. Then, from that page we can invoke any AJAX we want, because we have already established the "same origin". An example!
+
+<pre class='brush:javascript,gutter:false'> 
+var url = "http://mydomain.com/js/iframe";           
+var myframe = $("<iframe/>").attr("src", url).attr("width", "0px").attr("height", "0px").attr("id", "my_iframe");    
+$("#container").append(myframe);
+</pre>
+
+Here we're pulling a page from the remote server we wish to communicate with. Nothing too fancy involved. Lets look inside the page we're pulling back:
+
+<pre class='brush:html,gutter:false'> 
+<script type="text/javascript">init();</script>     
+</pre>
+
+All we're actually doing is calling a JS function. Lets look inside the Javascript:
+
+<pre class='brush:javascript,gutter:false'> 
+function init()
+{
+	$(document).ready(function(){
+		var url = "http://mydomain.com/api/v1/snaggled.json";
+		$.getJSON(url, function(data) {
+			// firebug
+			console.info(data);
+		});
+	});
+}   
+</pre>
+
+Aha! Now we're making the AJAX call. You'll note that we're allowed to make AJAX calls to this domain because we've already established the 'origin'. This can be taken a lot further and there's no shortage of information on this (as well as some security restrictions, such as no iframe to iframe communication). "This":http://softwareas.com/cross-domain-communication-with-iframes is one of the better blogs I've read on the subject. "Here":http://orensol.com/2009/06/07/cross-domain-ajax-calls-and-iframe-communication-how-to/ also.
+
+h3. JSONP
+
+The second solution appears to be made of win. "JSON with Padding":http://en.wikipedia.org/wiki/JSONP#JSONP is basically a workaround where:
+
+1) We pass a function name to the server as a param in our Cross-Domain call: 
+
+<pre class='brush:javascript,gutter:false'> 
+$(document).ready(function(){
+	var url = "http://twitter.com/status/
+	user_timeline/snaggled.json
+	?callback=JSONPcallbackFunction";
+	$.getJSON(url, function(data) {
+		// firebug
+		console.info(data);
+	});
+});
+</pre>
+
+2) The server dosen't just return the requested data as normal, but instead wraps the requested data in a Javascript function using the callback we provided, so that the response looks like this:
+
+<pre class='brush:javascript,gutter:false'> 
+JSONPcallbackFunction([{
+	"in_reply_to_user_id":null,
+	"created_at":"Tue Apr 06 19:29:57 +0000 2010",
+	"contributors":null,"geo":null
+	...
+</pre>
+
+What this actually does, rather than returning just data is return a piece of Javascript that gets executed. This works beautifully. Its not really AJAX though. I'm pretty sure its not using XMLHttpRequest and is nothing more than dynamic script element loading. I've also had some problems getting it to work with POST and PUT requests, which I believe is symptomatic of the previous statement. Nonetheless, it does work for certain situations, and is elegant.
+
+Up next: Google Chrome/JQuery Bug!
+
+</div>
+</div>
