@@ -1,0 +1,44 @@
+---
+layout: post
+title: Chrome Bug - sends 'undefined' when no data is passed to XMLHttpRequest
+---
+
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
+
+11 Apr 2010 - Denver, CO
+
+<div id="post-1" class="post">
+<div class="entry">
+ 
+Spent the week trying to juggle work, our 2 year old twins, my parents visiting from Ireland, and repeatedly driving to and from the hospital to spend time with our premature twins that were born on Easter Sunday. Its been a mad, but fun week. I have a secret weapon which has kept me going:
+
+<br/><img class="centered" src="http://tripletsmommy.com/wp-content/uploads/2010/03/freedunkindonutscoffee1.jpg" alt="Dunkin Turbo"/>
+
+Turbo! Babies will be home soon and parents are leaving in couple weeks, so life we be returning back to normal. In the meantime, here's a Google AJAX Chrome bug I experienced this weekend.
+
+h3. Chrome XMLHttpRequest Issue
+
+Its perfectly valid to perform an HTTP POST and send no data, such as the following line of jQuery code:
+
+<pre class='brush:javascript,gutter:false'> 
+	$.ajax({
+	  type: 'POST',
+	  url: url,     
+	  dataType: 'json'
+	});
+</pre>
+
+This should result in no data being sent in the POST but instead, Chrome sends an 'undefined' which is incorrect. This is easily fixed by forcing the client-side Javascript to send *something*:
+
+<pre class='brush:javascript,gutter:false'> 
+	$.ajax({
+	  type: 'POST',
+	  data: "",  
+	  url: url,     
+	  dataType: 'json'
+	});
+</pre>
+
+You can find bug reports on the issue "here":http://code.google.com/p/chromium/issues/detail?id=33062 and "here":http://dev.jquery.com/ticket/5123.
+</div>
+</div>
