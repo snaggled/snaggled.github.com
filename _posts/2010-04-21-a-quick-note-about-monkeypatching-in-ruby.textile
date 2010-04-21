@@ -1,0 +1,80 @@
+---
+layout: post
+title: Monkey Patching in Ruby
+---
+
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
+
+22 Apr 2010 - Denver, CO
+
+<div id="post-1" class="post">
+<div class="entry">
+ 
+Todays post comes courtesy of what is possibly the greatest programming music ever invented:
+
+<br/><img class="centered" src="http://ecx.images-amazon.com/images/I/41Q455DYGPL._SL500_AA300_.jpg" alt="Conan"/>
+
+h3. Monkey Patching
+
+More than just a cool name. No, really, its also called "Duck-Punching":http://www.ericdelabar.com/2008/05/metaprogramming-javascript.html:
+
+??Well, I was just totally sold by Adam, the idea being that if it walks like a duck and talks like a duck, it’s a duck, right? So if this duck is not giving you the noise that you want, you’ve got to just punch that duck until it returns what you expect.??
+
+This is not something I encountered much (ever) in Java, but I think thats indicative of the dynamic nature of the Ruby language (Python too for that matter). The reality is that the history of the name itself is somewhat more interesting that the concept. To quote "wikipedia":http://en.wikipedia.org/wiki/Monkey_patch: 
+
+??Since the word guerrilla and gorilla are near-homophones, people started using the incorrect term gorilla patch instead of guerrilla patch. When a developer then created a guerrilla patch they tried very hard to avoid any battles that may ensue due to the patch and the term monkey patch was coined to make the patch sound less forceful.??
+
+So, what are we talking about ? Well, to make a long story short, all we are talking about is the concept of dynamically modifying a class or object at runtime. Lets think about this a little. Sample Ruby class:
+
+<pre class='brush:ruby,gutter:false'> 
+	class Foo
+		def bar
+			"bar"
+		end
+	end
+
+	f = Foo.new
+	f.bar	
+	=> "bar"
+</pre>
+
+All is well and good until we discover that the "bar" method is wrong and shouldn't be returning "bar". What are our options ? Well, traditionally we'd probably sub-class Foo and fix the problem:
+
+<pre class='brush:ruby,gutter:false'> 
+	class Foo2 < Foo
+		def bar
+			"the correct bar"
+		end
+	end
+
+	f = Foo2.new
+	f.bar	
+	=> "the correct bar"
+</pre>
+
+The advantage of this approach is of course that we know we haven't broken anything. Any of the existing calls to Foo.bar should still work. However, what about the situation where Foo is already distributed, its out there in the wild, maybe its impossible or not practical for us to subclass it. Maybe its an issue in a piece of code we really don't care about (maybe we didn't write it), we just need it fixed.
+
+This is where the absolute beauty of a dynamic language like ruby comes in. Its possible for to dynamically change the Foo class, without modifying any of its source code (on disk). Here's what we can do in Ruby that we can't do in a bunch of other languages:
+
+<pre class='brush:ruby,gutter:false'> 
+	class Foo
+		def bar
+			"bar"
+		end
+	end
+
+	class Foo
+		def bar
+			"the correct bar"
+		end
+	end
+
+	f = Foo.new
+	puts f.bar
+</pre>
+
+Yeppers, you read that correctly. Ruby has the concept of "Open Classes":http://blog.aizatto.com/2007/06/01/ruby-and-open-classes/ meaning by re-declaring a class, we can effectively add or modify methods.
+
+Up next: Caching geocode lookups from google.
+</div>
+</div>
