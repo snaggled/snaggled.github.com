@@ -5,7 +5,7 @@ title: Monkey Patching in Ruby
 
 h2. <a href="{{ page.url }}">{{ page.title }}</a>
 
-22 Apr 2010 - Denver, CO
+21 Apr 2010 - Denver, CO
 
 <div id="post-1" class="post">
 <div class="entry">
@@ -73,7 +73,7 @@ This is where the absolute beauty of a dynamic language like ruby comes in. Its 
 	puts f.bar
 </pre>
 
-Yeppers, you read that correctly. Ruby has the concept of "Open Classes":http://blog.aizatto.com/2007/06/01/ruby-and-open-classes/ meaning by re-declaring a class, we can effectively add or modify methods.
+Yeppers, you read that correctly. Ruby has the concept of "Open Classes":http://blog.aizatto.com/2007/06/01/ruby-and-open-classes/ meaning by re-declaring a class, we can effectively add or modify methods. 
 
 Up next: Caching geocode lookups from google.
 </div>
