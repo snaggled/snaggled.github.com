@@ -1,0 +1,133 @@
+---
+layout: post
+title: Summer of Hawkwind (aka Running your rails tests using an in-memory database)
+---
+
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
+
+28 Apr 2010 - Denver, CO
+
+<div id="post-1" class="post">
+<div class="entry">
+ 
+2 weeks paternity leave from work means a couple of things. Firstly, it means I've been listening to a lot of music, and it seems the most fitting for Spring/Summer 2010 is some awesome "space-rock":http://news.nationalgeographic.com/news/2007/01/images/070105-space-rock.jpg. Order of the day seems to be "Hawkwind":http://www.progarchives.com/Review.asp?id=25205.
+
+<br/><img class="centered" src="http://capitalistliontamer.files.wordpress.com/2009/11/hawkwind.jpg" alt="Hawkwind"/>  
+
+Might get a mountain bike ride in on Friday. Mountain-biking + acid-rock == flashbacks whilst hurtling downhill at 30 mph.
+
+h3. Running Rails tests using an in-memory database
+
+The second thing being off work enables is the cleaning up of old projects and things on the to-do list. One thing thats been bugging for a while is the length of time it takes to run my rails test cases (running MySQL):
+
+<pre class='brush:bash,gutter:false'> 
+	~/git/cs(master) $ rake test
+	.........................
+	Finished in 264.208584 seconds.
+
+	25 tests, 2697 assertions, 0 failures, 0 errors
+</pre>              
+
+Over 4 minutes, thats a long time when you've changed one line of code. A challenge! Onwards and upwards, heres how to get your rails test to run using "sqlite3":http://www.sqlite.org/.
+	
+h4. 1. Install the sqlite gem    
+
+<pre class='brush:bash,gutter:false'> 
+sudo gem install sqlite3-ruby
+</pre>              
+
+This may or may not go smoothly. Native extension compilation problems could lead to "macports":http://sqlite3.darwinports.com/ on OSX, or the equivalent "apt-get":http://kristofhouwen.wordpress.com/2009/02/01/install-sqlite3-ruby-gem-on-ubuntu-810/ on Ubuntu.
+
+h4. 2. Modify database.xml
+
+<pre class='brush:xml,gutter:false'> 
+	test: 
+	   adapter: sqlite3 
+	   database: ":memory:"
+</pre>     
+
+Speaks for itself. Keep the old one around in case you want to run comparison speed-tests.             
+
+h4. 3. Install the 'in_memory_fix' plugin 
+
+I grabbed it from the following svn repo:
+                 
+<pre class='brush:bash,gutter:false'> 
+./script/plugin install http://topfunky.net/svn/plugins/memory_test_fix
+</pre>
+
+But there are also a bunch of git forks "floating around":http://github.com/rsl/memory_test_fix/network.
+
+What does it do ? Well, the short of it is that because the db is in memory, it needs to be re-created each time, which is what the plugin does. You can find more info over "here":http://chrisroos.co.uk/blog/2006-02-08-in-memory-sqlite-database-for-rails-testing.
+
+h4. 4. Differences between MySQL and Sqlite3
+
+At last, some meat. You can take what you have and try to run your rake tests. There's are chance you could be good to go. In my case, there were a couple of syntactic differences between the two databases that needed resolving:
+
+h4. RAND vs RANDOM  
+
+First up was that the sqlite3 random function is called 'RANDOM()' whilst the MySQL one is called 'RAND()'. This cause an active_record lookup like the following one to fail:
+      
+<pre class='brush:ruby,gutter:false'> 
+@bar = Foo.find(:all, :order => 'RAND()')                 
+</pre>
+                                      
+Couple of ways to fix this. Easiest from my point of view was simply to create the 'RANDOM' function in MySQL. Sounds like a migration:
+
+<pre class='brush:ruby,gutter:false'> 
+	class CreateRandomFunction < ActiveRecord::Migration
+	  def self.up            
+	    adapter = User.connection.
+			instance_variable_get("@config")
+			[:adapter]      
+	    if adapter == 'mysql'
+	      execute "create function random() returns integer return rand();"
+	    end
+	  end
+
+	  def self.down  
+	    adapter = User.connection.
+			instance_variable_get("@config")
+			[:adapter]      
+	    if adapter == 'mysql'
+	      execute "drop function if exists random;"
+	    end
+	  end
+	end              
+</pre>  
+
+h4. Doesn't this apply to test-cases ?
+
+Err, I suspect that should be enough, but my test cases were failing because around the time that fixtures were loaded, the function got blown away again. I ended up with this in my test_helper.rb:
+
+<pre class='brush:ruby,gutter:false'> 
+adapter = Rails.configuration.
+	database_configuration
+	[Rails.configuration.environment]
+	["adapter"]
+if adapter == "mysql" && ENV["RAILS_ENV"] == 'test' 
+  ActiveRecord::Base.connection.execute("drop function if exists random;");
+  ActiveRecord::Base.connection.execute("create function random() returns integer return rand();");
+end
+</pre>
+
+h4. Fixtures and "1" vs "t"
+                
+Almost out of the woods, but not yet. If you're using fixtures, and you've auto-magically generated them (as I have), you might see the following entry for Booleans:
+
+<pre class='brush:ruby,gutter:false'>  
+boolean_variable_in_mysql: "1"   
+</pre>                      
+
+This is all and well in MySQL, but sqlite3 doesn't like it. It stores its bools as the char "t" or "f" and you may need to convert them. _true_ or _false_ should work fine, i.e.    
+
+<pre class='brush:ruby,gutter:false'>  
+boolean_variable_in_mysql: true   
+</pre>
+
+And thats it. My tests running in memory. Time to turn the "space-rock":http://www.starfarer.net/hwalbums.html up.    
+                           
+<br/><img class="centered" src="http://images.tribe.net/tribe/upload/photo/1db/de9/1dbde978-b5a1-4d3e-9934-00454971e44c" alt="Doremi"/>  
+
+</div>
+</div>
