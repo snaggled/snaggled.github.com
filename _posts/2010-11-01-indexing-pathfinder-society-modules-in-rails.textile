@@ -1,0 +1,23 @@
+---
+layout: post
+title: Indexing Pathfinder Society Modules in Rails
+---
+
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
+
+1 Nov 2010 - Denver, CO
+
+<div id="post-1" class="post">
+<div class="entry">
+ 
+I play a lot of "Pathfinder":http://paizo.com, which is actually an incarnation of "Dungeons & Dragons":http://en.wikipedia.org/wiki/Dungeons_%26_Dragons. I love paizo and think the quality of the stuff they produce is outstanding. Anyway, I was having a little trouble navigating the list of modules/scenarios available, so a spare saturday afternoon knocked up a site called "libris arcanis":http://librisarcanis.com. 
+
+This is perfect for Rails. Its a quick "rake task":http://rake.rubyforge.org/classes/Rake/Task.html to fetch the data, with "active record":http://api.rubyonrails.org/classes/ActiveRecord/Base.html abstracting all the heavy lifting. All we need to do is stick a controller in front of it and some pretty CSS (which a grabbed from "LFR Compendium":http://www.gamerclubhouse.com/ so kudos to those guys for letting me use it).
+
+I haven't had a chance to add things to github yet, but in short, this is why I love rails. All in, this was about 4-8 hours effort an a saturday afternoon, fueled by:
+                                                                    
+<br/><img class="centered" src="http://sas.guidespot.com/bundles/guides_rp/assets/widget_cRoBvoHK5eG49QXtyET0Ds.jpg" alt="Vanilla Porter"/>  
+<br/>
+C'est tout! Getting sprinklers blown out for the winter, must run!
+</div>
+</div>
