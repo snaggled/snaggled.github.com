@@ -1,0 +1,24 @@
+---
+layout: post
+title: Finished the Breckenridge Brewery Sampler Pack & Running on Ruby 1.9.2 + Rails 3
+---
+
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
+
+4 Nov 2010 - Denver, CO
+
+<div id="post-1" class="post">
+<div class="entry">
+  
+Todays broadcast brought to you by the always epic album:       
+<br/>
+<br/><img class="centered" src="http://upload.wikimedia.org/wikipedia/en/f/f6/Shoat.jpg" alt="History of a Time to Come"/>        
+<br/>
+                
+Took me a while to get round to this. I've meet meaning to upgrade the "hackintosh":http://www.osx86project.org/ to Snow Leopard, so I've been putting off most other upgrades until I get round to it. Anyway, this evening I could wait no longer and took the "Ruby 1.9.2":http://www.ruby-lang.org/en/news/2010/08/18/ruby-1-9-2-is-released/ plunge as well as installing the "Rails 3.0.1":http://www.rubyinside.com/rails-3-0-released-and-22-free-videos-to-bring-you-up-to-speed-3733.html gems.
+
+What can I say ? Along the way I discovered something I absolutely *love*. "Ruby Version Manager":http://rvm.beginrescueend.com/ is literally the dogs bollocks. It freaking awesome. No more 'sudo gem install'. I now have "1.8.6":http://ruby-doc.org/core/, "1.8.7":http://ruby-doc.org/core-1.8.7/index.html and "1.9.2":http://ruby-doc.org/ruby-1.9/index.html rubies, all with their own "gemsets":http://rvm.beginrescueend.com/gemsets/, instantly switchable in 1 command line. Go check it out, I dare you not to love it.
+                                               
+What else ? One thing I did notice is that "RSpec":http://relishapp.com/rspec has changed considerably. None of the previous 1.3 specs worked in a couple of the plugins I played with. To that end, I've checked in patches for "feedzilla":https://github.com/snaggled/feedzirra and "sax-machine":https://github.com/snaggled/sax-machine. You can either clone those repositories and build your own gems locally, or wait until the changes are pulled into the man repos, which are "here":https://github.com/pauldix/feedzirra  and "here":https://github.com/pauldix/sax-machine respectively.
+</div>
+</div>
