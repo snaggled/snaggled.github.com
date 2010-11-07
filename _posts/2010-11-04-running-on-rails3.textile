@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Finished the Breckenridge Brewery Sampler Pack & Running on Ruby 1.9.2 + Rails 3
+title: Finished the Breckenridge Brewery Sampler Pack and Running on Ruby 1.9.2 + Rails 3
 ---
 
 h2. <a href="{{ page.url }}">{{ page.title }}</a>
