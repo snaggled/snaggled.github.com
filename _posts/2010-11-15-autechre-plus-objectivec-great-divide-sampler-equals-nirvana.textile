@@ -1,0 +1,71 @@
+---
+layout: post
+title: Autechre + Great Divide Sampler + Objective C == Nirvana
+---
+
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
+
+15 Nov 2010 - Denver, CO
+
+<div id="post-1" class="post">
+<div class="entry">
+  
+Honestly, it was. It was like the early 90s all over again - I might as well have had "Poland":http://www.youtube.com/watch?v=Hlfd6kG0Lm8 by "Tangerine Dream":http://www.tangerinedream.org/ on the stereo and been hacking away at some Amiga 68k assembler, whilst connecting to a "Razor 1911":http://www.razor1911.com/demo/?menu=history BBS on my trusty "14.4k US Robotics HST modem":http://www.techfuels.com/attachments/general-networking/9618d1230698911-u-s-robotics-usr3453c-u.s.-robotics-usr3453c.jpg (which cost me a fortune back then). I have to say I miss those days. Nonetheless, I managed to get pretty close to that feeling on Saturday night with some iPhone coding, a few of these bad boys:     
+<br/>
+<br/><img class="centered" src="/images/great_divide1.jpg" alt="Great Divide"/>        
+<br/>                                                                                                        
+And this on the stereo:
+<br/>
+<br/><img class="centered" src="http://www.nuevaforma.com/wp-content/uploads/2009/05/autechre-amber.jpg" alt="Autechre Amber"/>        
+<br/>
+No sine-waves or fun demo comps this time, instead it was some daft Objective-C issue that took me to endorphin-land. All I wanted was to be able to check/uncheck a 'Same As Billing' field in a registration form, and have the form modified accordingly. Hardly rocket-science, right ? Think AJAX inserting some additional fields into an HTML div. I basically wanted the same thing on the iPhone.
+
+In short, we just want things to look like this when the checkbox is marked:    
+<br/>
+<br/><img class="centered" src="/images/before.png" alt="before"/>        
+<br/>
+
+And this when its not:    
+<br/>
+<br/><img class="centered" src="/images/after.png" alt="after"/>        
+<br/>        
+
+Pretty standard "UITableView":http://developer.apple.com/library/ios/#documentation/uikit/reference/UITableView_Class/Reference/Reference.html stuff, we need to:
+
+1. Add ourselves as a UITableView "delegate":http://developer.apple.com/library/ios/#documentation/uikit/reference/UITableViewDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intf/UITableViewDelegate
+
+<pre class='brush:cpp,gutter:false'> 
+@interface RegisterViewController : UIViewController <UITableViewDelegate>,
+</pre>
+                                                                               
+2. Implement didSelectRowAtIndexPath 
+
+<pre class='brush:cpp,gutter:false'> 
+- (void)tableView:(UITableView *)view didSelectRowAtIndexPath:(NSIndexPath*)newIndexPath
+</pre>
+
+3. Insert & Delete the required sections/rows accordingly
+
+<pre class='brush:cpp,gutter:false'> 
+[view insertSections:[NSIndexSet indexSetWithIndex:5] 
+  withRowAnimation:UITableViewRowAnimationFade];
+</pre>    
+  
+Everything worked just peachy, except when I'd try to 're-check' what I'd just unchecked. At that point, it would appear that only a subset of the rows I wanted inserted, would actually appear. In fact, just the last one:
+
+<br/>
+<br/><img class="centered" src="/images/final.png" alt="final"/>        
+<br/>
+
+I spent several hours banging my head against the desk (i.e. drinking more beer), to eventually figure out that it was "becomeFirstResponder":http://developer.apple.com/library/ios/#documentation/uikit/reference/UIResponder_Class/Reference/Reference.html#//apple_ref/occ/cl/UIResponder. I was inadvertently setting each field I created to be the first responder, and it appeared to be working fine, except when I tried to dynamically insert sections/rows and it got very confused.
+
+Some additional care taken when setting becomeFirstResponder, and its all good, got a nice buzz going and it was time to watch "this documentary":http://www.imdb.com/title/tt1289806/.
+
+<br/>
+<br/><img class="centered" src="http://4.bp.blogspot.com/_8lRGZoO4YYE/S08z5lLY4TI/AAAAAAAABtU/Qlwxku_d0VA/s400/Kraftwerk-AndTheElectronicRevolutio.jpeg" alt="kraftwerk"/>        
+<br/>                                                                                                           
+
+Which was epic :)
+ 
+</div>
+</div>
