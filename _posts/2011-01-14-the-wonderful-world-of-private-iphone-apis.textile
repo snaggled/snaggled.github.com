@@ -1,0 +1,44 @@
+---
+layout: post
+title: The Wonderful World of Private iPhone APIs
+---
+
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
+
+14 Jan 2011 - Denver, CO
+
+<div id="post-1" class="post">
+<div class="entry">
+
+Also known as "How to get your app submission quickly rejected from the Apple AppStore". Christmas was epic - plenty of beer, parties, and the kids had a blast. I also had plenty of time to catch up on a few projects, so there's lot of material to blog about.
+<br/>
+First up, off the top of my head, was the discovery that not all is as it seems with the "iPhone SDK":http://developer.apple.com/devcenter/ios/index.action. Lets start by making an SSL/HTTPS call from the phone: 
+  
+<pre class='brush:cpp,gutter:false'> 
+NSData *data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
+</pre>
+
+Vanilla stuff. Except, that if you're SSL certificate is phoney or not valid, the phone's going to complain bitterly with an "untrusted server certificate" error. Fair enough, but what if we don't have a real SSL certificate ? What if we're on some ad-hoc test machine and not production ?
+      
+And to the rescue comes a _private_ API. _Private_ as in its there in the SDK but the documentation doesn't reflect it. Kind of like a little mini-christmas from Apple.
+
+We simply add this to our delegate and we're good to go. In short:
+
+<pre class='brush:cpp,gutter:false'> 
+  + (BOOL)allowsAnyHTTPSCertificateForHost:(NSString *)host
+  {
+  	NSLog(@"allowsAnyHTTPSCertificateForHost");
+
+  	return YES; // Or whatever logic
+  }
+</pre>
+
+My understanding is that having a private API in your code will result in your app getting rejected from the AppStore, so remember to take it out before you submit.
+
+One final note of importance - epic album - Gargantuan #minimal/#progressive/#techno.
+<br/>
+<br/><img class="centered" src="http://ecx.images-amazon.com/images/I/51UAZs8cKTL._SS500_.jpg" alt="Lee Burridge - Balance 12"/>        
+<br/>                                                                                                           
+ 
+</div>
+</div>
