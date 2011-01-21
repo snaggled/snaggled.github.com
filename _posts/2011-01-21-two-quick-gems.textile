@@ -1,0 +1,92 @@
+---
+layout: post
+title: Two Quick Gems to Round Out the Week
+---
+
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
+
+21 Jan 2011 - Denver, CO
+
+<div id="post-1" class="post">
+<div class="entry">
+  
+Good week, lots accomplished. 60 minutes until I knock off for pizza and beer, here's something I thought up as I started to wind down for the week and knocked up this Friday afternoon. I've been thinking about an automated file-storage solution in ruby for a while now. This afternoon I thought "What if I wanted to backup some of my files to an internal (enterprise) file server ?". The two modules I'm about to detail are the result of that thought process.
+
+The first thing we need to do is gather the details of all the files we need. "SQLite3":http://www.sqlite.org/ is probably suitable enough. All we need to do is accept some parameters and build a nice little cache of file information. Source code "here":https://github.com/snaggled/hungrynoodle (you can tell I was getting hungry by the name). The gem is built "here":https://rubygems.org/gems/hungrynoodle.
+
+To use it is very simple, lets say we want to build a quick cache of all the pdf files in our home directory:
+  
+<pre class='brush:ruby,gutter:false'> 
+  require 'rubygems'
+  require 'hungrynoodle'
+  h = HungryNoodle.new('/Users/snaggled', '\.pdf')
+  h.find_and_insert
+</pre>                                                        
+
+We can query that via the following:
+
+<pre class='brush:ruby,gutter:false'>   
+  h.basenames
+</pre>                                                        
+  
+Secondly, I picked the internal "IBM Cattail":http://domino.watson.ibm.com/cambridge/research.nsf/99751d8eb5a20c1f852568db004efc90/7ea66f4eb9382eaf852573d1005cff95!OpenDocument
+as a file storage destination because I like it - it's a cool system, its REST based, etc, etc.
+
+A quick "gem":https://rubygems.org/gems/cattail to facilitate uploading and querying files, and we're in a position to back up files we care about.
+
+Heres a quick and dirty script to facilitate: 
+                                             
+<pre class='brush:ruby,gutter:false'> 
+  require 'rubygems'
+  require 'cattail'
+  require 'hungrynoodle'
+
+  if ARGV.length != 4
+    p "Usage: cattail <directory, e.g. '.'> 
+                      <extension to be stored, e.g 'ppt'> 
+                      <cattail login> 
+                      <cattail passwd>"
+    exit(-1)
+  end
+
+  dir = ARGV[0]
+  extension = ARGV[1]
+  login = ARGV[2]
+  passwd = ARGV[3]
+
+  # establish connections 
+  hungrynoodle = HungryNoodle.new(
+    dir, 
+    "\.#{extension}", 
+    "#{extension}.db", 
+    "#{extension}.txt")
+  cattail = Cattail.new(login, passwd)
+
+  hungrynoodle.find_and_insert
+
+  local_files = hungrynoodle.basenames
+  remote_files = cattail.list
+  diff = local_files - remote_files
+
+  diff.each do |file|
+  	file_record = hungrynoodle.file(file)
+  	p "Uploading #{file_record[0][3]}"
+  	cattail.insert(file_record[0][3])
+  end
+</pre>
+                  
+And that's it. Back to our earlier example:     
+
+<pre class='brush:bash,gutter:false'> 
+  ruby cattail.rb /Users/snaggled pdf login passwd
+</pre>
+
+That will grab all the PDFs in our home directory and make sure they are all sent to the backup server. I'll let that bad boy run and knock off for some pizza and beer, let the weekend begin.
+
+Todays musings in accompaniment to this sweet album:
+<br/>
+<br/><img class="centered" src="http://ecx.images-amazon.com/images/I/518YM2Wn6NL._SS400_.jpg" alt="Apparat - Things to be Frickled"/>        
+<br/>                                                                                                           
+ 
+</div>
+</div>
