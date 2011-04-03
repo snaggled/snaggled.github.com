@@ -1,0 +1,59 @@
+---
+layout: post
+title: 2011 - The Summer of Horror, Carrion Crown, Legacy of Fire
+---
+
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
+
+3 April 2011 - Denver, CO
+
+<div id="post-1" class="post">
+<div class="entry">
+  
+It's rare (ever ?) that I make a non-programming post, but there's so much roleplaying awesome-sauce going on at the minute that I had to let it out. 
+
+Firstly, the upcoming trip to Ireland provided a well-timed opportunity to wrap up a couple of the campaigns I've been partaking in. The first was the conclusion of the "Price of Immortality" trilogy I was DMing. Lasting 9 sessions, this mini-campaign took the characters from the sleepy town of "Kassen":http://s202.photobucket.com/albums/aa143/cpanthersfan/Golarion/?action=view&current=Kassen.png&sort=ascending to a final showdown with a "Razmir":http://pathfinder.wikia.com/wiki/Razmir obsessed elven sorceress called "Iramine":http://7eme-ruellerouge.deviantart.com/art/Elf-Iramine-159731653?q=sort%3Atime+gallery%3A7eme-ruellerouge&qo=3&offset=30 in the impressive and deadly City of Golden Death.
+                                                                                                                                         
+<br/>
+<img class="centered" src="http://paizo.com/image/product/catalog/PZO/PZO9524_500.jpeg" alt="City of Golden Death"/>        
+<br/>
+
+Secondly was the conclusion of the epic and stunningly good "Legacy of Fire":http://paizo.com/pathfinder/adventurePath/legacyOfFire adventure path, led by a good friend and incredible DM "Dave":http://www.facebook.com/people/Dave-Dostaler/100001001179978. I cannot speak highly enough about the dedication, skill-set and general awesomeness of Dave, the ensemble of characters he gathered around, and the great story that was spun. Lasting around 2 years, it culminated on Friday evening with an epic battle between the party (2 of whom died) and the epic efreet villan "Javhul" (pictured below). We celebrated the finale with a couple of six packs (of "Ranger":http://www.newbelgium.com/beer/detail.aspx?id=c35e8a3e-0a8c-404d-8b74-b03fe3e90c44  beer no less) and the stoke has lasted all weekend. 
+          
+<br/>
+<img class="centered" src="http://paizo.com/image/product/catalog/PZO/PZO9024_500.jpeg" alt="The Final Wish"/>        
+<br/>
+
+All in all, this campaign was the essence and the justification for my roleplaying hobby. As far as I am concerned, in an economic system designed to encourage (if not mandate) competitiveness, and a social system that fosters selfishness, greed and the enforcement of group-derived values, principles and definitions of normality, there exists no higher calling than that of seeking out compatible companions, led by the grand over-arching vision of a single person, and embarking upon a communal storytelling exercise. An exercise that facilitates the abandonment of all known (societal and self-imposed) restrictions, pre-conceptions rules, and that effectively allows the creation of a utopian (or perhaps even dystopian) alternate existence.                                                            
+
+For kicks, here's a few happy memories from the campaign.
+
+<br/>
+<img class="centered" src="http://paizo.com/image/content/Blog/3DBattleMarket1.jpg" alt="Battle Market"/>        
+<br/>
+
+<br/>
+<img class="centered" src="images/b.jpg" alt="The Assault on Kelmarane"/>        
+<br/>
+
+And the final roll that ended the campaign:
+
+<br/>
+<img class="centered" src="images/d20.jpg" alt="The Final Roll"/>        
+<br/>                                                                                                      
+
+After a brief vacation, I'll be kicking off the summer with 2 horror-related storylines that I'm very excited about. First up is the "Carrion Crown":http://paizo.com/pathfinder/adventurePath/carrionCrown adventure path, currently being published with paizo. I intend to run this on a weekly basis, possibly getting through it in about 9 months. With undead, werewolves, flesh-golems and ultimately a cult desperate to bring back the arch-lich "Tar-Baphon":http://paizo.com/image/product/catalog/PZO/PZO2002-2_500.jpeg, it promises to provide some fun horrortainment.                          
+
+<br/>
+<img class="centered" src="http://paizo.com/image/product/catalog/PZO/PZO9043_500.jpeg" alt="Tar Baphon"/>        
+<br/>                      
+
+Secondly, I promised some friends I'd run them through a "Call of Cthulhu":http://en.wikipedia.org/wiki/Call_of_Cthulhu_(role-playing_game) one-shot. I've select "Bad Moon Rising" from the "Great Old Ones" sourcebook, which I'm very excited about - it's a lot more epic that previous CoC one-shots, so we'll see how it goes.
+
+<br/>
+<img class="centered" src="http://www.collectibles-articles.com/antique/collectible-image-large/cal-of-cthulhu-1920s-the-great-old-ones-chaosium-1989_170611949462.jpg" alt="Great Old Ones"/>        
+<br/>                                     
+
+And that's about it, celebrating the kids birthday today, so we're heading out to PF Changs. I'm in the mood for some IPad programming, so expect to see some related posts soon. 
+</div>
+</div>
