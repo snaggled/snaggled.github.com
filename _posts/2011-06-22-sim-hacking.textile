@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 2011 - Sim Hacking
+title: Sim Hacking
 ---
 
 h2. <a href="{{ page.url }}">{{ page.title }}</a>

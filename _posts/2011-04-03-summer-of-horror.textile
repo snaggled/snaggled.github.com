@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 2011 - The Summer of Horror, Carrion Crown, Legacy of Fire
+title: The Summer of Horror, Carrion Crown, Legacy of Fire
 ---
 
 h2. <a href="{{ page.url }}">{{ page.title }}</a>
