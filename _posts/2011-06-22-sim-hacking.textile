@@ -1,0 +1,36 @@
+---
+layout: post
+title: 2011 - Sim Hacking
+---
+
+h2. <a href="{{ page.url }}">{{ page.title }}</a>
+
+22 June 2011 - Denver, CO
+
+<div id="post-1" class="post">
+<div class="entry">
+  
+Summer is here and its epic. Quit the enterprisey "IBM":http://ibm.com product management job to go back to startup-land. "These guys":http://snugghome.com are very smart, great to work with, and trying to change the world. I've also been knocking out some iPad & Android code at the weekend, so posts to come.
+
+I picked up a used Samsung Captivate so I could get my hands dirty with some "Android OS":http://developer.android.com/reference/android/os/package-summary.html code.
+
+<br/>
+<img class="centered" src="http://reviews.cnet.com/sc/34121737-2-440-OVR-1.gif" alt="Samsung Captivate"/>        
+<br/>
+
+The only snag is that it wanted a standard SIM and all I had to hand (from my iPhone 4)was  a micro-sim:
+
+<br/>
+<img class="centered" src="/images/before.jpg" alt=" Before"/>        
+<br/>
+
+A quandary! Not to be outdone, and in the interests of the "hands on imperative":http://en.wikipedia.org/wiki/Hacker_ethic#Hands-on_imperative I decided to butcher an old SIM-card and turn it into a placeholder for the micro-SIM. In short:
+
+<br/>
+<img class="centered" src="/images/after.jpg" alt=" After"/>        
+<br/>
+
+And it works! This pleases me immensely. Android code to come! 
+
+</div>
+</div>
